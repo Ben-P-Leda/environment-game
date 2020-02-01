@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Playing Field\PlayingFieldTile.cs" />
     <Compile Include="Assets\Scripts\Rain\CloudMovement.cs" />
     <Compile Include="Assets\Scripts\Rain\CloudPool.cs" />
+    <Compile Include="Assets\Scripts\Smog\SmogOverlay.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Other Development/Global Game Jam 2020/environment-game/New Unity Project/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
