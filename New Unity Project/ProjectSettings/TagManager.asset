@@ -9,6 +9,7 @@ TagManager:
   - Damage Collider
   - Plant
   - Tool Carousel
+  - Water Plant
   layers:
   - Default
   - TransparentFX

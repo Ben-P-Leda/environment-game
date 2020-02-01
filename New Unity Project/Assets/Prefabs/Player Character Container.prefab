@@ -109,6 +109,51 @@ Transform:
   m_Father: {fileID: 7169059851944572977}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &862128196360914993
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7894853267599664175}
+  - component: {fileID: 5517687781732844983}
+  m_Layer: 8
+  m_Name: Water Plants Collider
+  m_TagString: Water Plant
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7894853267599664175
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862128196360914993}
+  m_LocalRotation: {x: 0.000000059604638, y: -0.000000029802319, z: -0.43523407, w: 0.9003173}
+  m_LocalPosition: {x: 0.24, y: -3.07, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3159090838015560568}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -51.600002}
+--- !u!136 &5517687781732844983
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862128196360914993}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &900439751932245672
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,6 +183,7 @@ Transform:
   m_Children:
   - {fileID: 2448287952082088744}
   - {fileID: 542066495166627506}
+  - {fileID: 7894853267599664175}
   m_Father: {fileID: 7169059851944572977}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
@@ -998,8 +1044,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95a24061902455f4aa06ac98cabb9e9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startGridX: 10
-  _startGridZ: 5
   _movementSpeed: 5
 --- !u!1 &7169059851325230307
 GameObject:
