@@ -12,6 +12,7 @@ namespace Plants
         private SmogOverlay _smogOverlay;
         private float _scale;
         private float _growthTimeRemaining;
+        private float _timeToNextWaterAccept;
 
         private void Awake()
         {
@@ -24,6 +25,7 @@ namespace Plants
         {
             _scale = 0.0f;
             _growthTimeRemaining = Random.Range(0.5f, 0.55f);
+            _timeToNextWaterAccept = 0.0f;
             _tileOccupied = _playingFieldGrid.GetRandomTile(true);
 
             if (_tileOccupied == null)
@@ -46,13 +48,25 @@ namespace Plants
             }
 
             _scale -= 0.1f * Time.fixedDeltaTime * _smogOverlay.SmogDensity;
-
             _transform.localScale = Vector3.one * _scale;
 
             if ((_scale <= 0.0f) && (_growthTimeRemaining <= 0.0f))
             {
-                // TODO: Let the game know we lost a plant
                 gameObject.SetActive(false);
+            }
+
+            _timeToNextWaterAccept = Mathf.Max(_timeToNextWaterAccept - Time.fixedDeltaTime);
+        }
+
+        private void OnTriggerEnter(Collider collider)
+        {
+            Debug.Log($"{collider.tag} - {_transform.name} - {_timeToNextWaterAccept}");
+
+            if ((collider.tag == "Water Plant") && (_timeToNextWaterAccept <= 0.0f))
+            {
+                Debug.Log("Topped up!");
+                _timeToNextWaterAccept = 1.0f;
+                _growthTimeRemaining = 0.4f;
             }
         }
     }

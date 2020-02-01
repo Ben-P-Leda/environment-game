@@ -98,18 +98,14 @@ namespace Player
         {
             if (!_isFalling)
             {
-                switch (_activeTool)
+                if ((_activeTool == PlayerTools.Hammer) && (!_actionInProgress) && (Input.GetButtonDown("Jump")))
                 {
-                    case PlayerTools.Hammer:
-                        if ((!_actionInProgress) && (Input.GetButtonDown("Jump")))
-                        {
-                            _actionInProgress = true;
-                            _animator.SetTrigger("Attack");
-                        }
-                        break;
-                    case PlayerTools.Pickaxe:
-                        _actionInProgress = Input.GetButton("Jump");
-                        break;
+                    _actionInProgress = true;
+                    _animator.SetTrigger("Attack");
+                }
+                else if (_activeTool != PlayerTools.Hammer)
+                {
+                    _actionInProgress = Input.GetButton("Jump");
                 }
             }
         }
@@ -147,6 +143,7 @@ namespace Player
             _animator.SetBool("Is Moving", _isMoving);
             _animator.SetBool("Is Falling", _isFalling);
             _animator.SetBool("Is Repairing", _actionInProgress && _activeTool == PlayerTools.Pickaxe);
+            _animator.SetBool("Is Watering", _actionInProgress && _activeTool == PlayerTools.Can);
         }
 
         private void OnTriggerEnter(Collider collider)
