@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Enums;
 using PlayingField;
 using UnityEngine;
 
@@ -6,14 +8,11 @@ namespace Player
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private int _startGridX = 10;
-        [SerializeField] private int _startGridZ = 5;
         [SerializeField] private float _movementSpeed = 5.0f;
 
         private Transform _transform;
         private Rigidbody _rigidbody;
         private Animator _animator;
-        private PlayingFieldGrid _playingFieldGrid;
 
         private Transform _hammer;
         private Transform _pickaxe;
@@ -23,14 +22,24 @@ namespace Player
         private bool _isFalling;
         private bool _actionInProgress;
 
+        private Vector3 _startPosition;
         private Tool _activeTool;
+        private ToolCarousel _carousel;
+
+        public void InitializePlayer(Vector3 startPosition, Tool startingTool, ToolCarousel carousel)
+        {
+            _startPosition = startPosition;
+            _carousel = carousel;
+
+            ActivateTool(startingTool);
+            Respawn();
+        }
 
         private void Awake()
         {
             _transform = transform;
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponentInChildren<Animator>();
-            _playingFieldGrid = FindObjectOfType<PlayingFieldGrid>();
 
             _hammer = GetComponentsInChildren<Transform>().First(x => x.name == "Hammer Container").transform;
             _pickaxe = GetComponentsInChildren<Transform>().First(x => x.name == "Pickaxe Container").transform;
@@ -44,13 +53,6 @@ namespace Player
             _actionInProgress = false;
         }
 
-        private void Start()
-        {
-            ActivateTool(Tool.Can);
-
-            Respawn();
-        }
-
         private void ActivateTool(Tool toActivate)
         {
             _activeTool = toActivate;
@@ -61,10 +63,10 @@ namespace Player
 
         private void Respawn()
         {
+            _transform.position = _startPosition;
+
             _isMoving = false;
             _isFalling = false;
-
-            _transform.position = _playingFieldGrid.TileGrid[_startGridX][_startGridZ].Position;
         }
 
         private void FixedUpdate()
@@ -143,15 +145,18 @@ namespace Player
             _animator.SetBool("Is Repairing", _actionInProgress && _activeTool == Tool.Pickaxe);
         }
 
+        private void OnTriggerEnter(Collider collider)
+        {
+            if (collider.name == _carousel.name)
+            {
+                Tool nextTool = (Tool)(((int)_activeTool + 1) % Enum.GetNames(typeof(Tool)).Length);
+                ActivateTool(nextTool);
+                _carousel.ActivateToolForPlayer(nextTool);
+            }
+        }
+
         private const float MovementThreshold = 0.01f;
         private const float Fall_Threshold = -0.1f;
         private const float Respawn_Threshold = -15.0f;
-
-        private enum Tool
-        {
-            Hammer,
-            Pickaxe,
-            Can
-        }
     }
 }

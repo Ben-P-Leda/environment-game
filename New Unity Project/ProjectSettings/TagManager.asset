@@ -8,6 +8,7 @@ TagManager:
   - Repair Ground
   - Damage Collider
   - Plant
+  - Tool Carousel
   layers:
   - Default
   - TransparentFX

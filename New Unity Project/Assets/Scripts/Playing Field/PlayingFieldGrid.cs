@@ -6,6 +6,7 @@ namespace PlayingField
     {
         [SerializeField] private GameObject _tilePrefab = null;
         [SerializeField] private GameObject _plantPrefab = null;
+
         [SerializeField] private int _gridWidth = 40;
         [SerializeField] private int _gridDepth = 40;
         [SerializeField] private int _startingPlantCount = 4;
@@ -15,6 +16,17 @@ namespace PlayingField
         public Vector3 GetRandomTileCenter()
         {
             return TileGrid[Random.Range(0, _gridWidth)][Random.Range(0, _gridDepth)].Position;
+        }
+
+        public Vector3 GetCarouselPosition(bool playingFromLeft)
+        {
+            return TileGrid[playingFromLeft ? 1 : _gridWidth - 2][_gridDepth / 2].Position;
+        }
+
+        public Vector3 GetPlayerStartPosition(bool playingFromLeft)
+        {
+            int offset = _gridWidth / 4;
+            return TileGrid[playingFromLeft ? offset : _gridWidth - (offset + 1)][_gridDepth / 2].Position;
         }
 
         private void Awake()
@@ -46,16 +58,16 @@ namespace PlayingField
                 }
             }
 
-            for (int i = 0; i < _startingPlantCount; i++)
-            {
-                Vector3 plantLocation = GetRandomTileCenter();
+            //for (int i = 0; i < _startingPlantCount; i++)
+            //{
+            //    Vector3 plantLocation = GetRandomTileCenter();
 
-                GameObject plant = Instantiate(_plantPrefab);
-                plant.name = $"Plant {i}";
+            //    GameObject plant = Instantiate(_plantPrefab);
+            //    plant.name = $"Plant {i}";
 
-                plant.transform.position = plantLocation;
-                plant.transform.parent = transform;
-            }
+            //    plant.transform.position = plantLocation;
+            //    plant.transform.parent = transform;
+            //}
         }
 
         private static readonly Color[] Tile_Healthy_Colors = {new Color(0.0f, 0.6f, 0.0f), new Color(0.0f, 0.4f, 0.0f)};
