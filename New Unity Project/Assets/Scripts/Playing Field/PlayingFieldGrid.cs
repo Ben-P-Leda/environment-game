@@ -5,8 +5,10 @@ namespace PlayingField
     public class PlayingFieldGrid : MonoBehaviour
     {
         [SerializeField] private GameObject _tilePrefab = null;
+        [SerializeField] private GameObject _plantPrefab = null;
         [SerializeField] private int _gridWidth = 40;
         [SerializeField] private int _gridDepth = 40;
+        [SerializeField] private int _startingPlantCount = 4;
 
         public PlayingFieldTile[][] TileGrid;
 
@@ -33,11 +35,30 @@ namespace PlayingField
                     tile.transform.parent = transform;
 
                     TileGrid[x][z] = tile.GetComponent<PlayingFieldTile>();
-                    TileGrid[x][z].SetHealthyColour(Tile_Healthy_Colors[(x + z) % Tile_Healthy_Colors.Length]);
+                    if ((x < 2) || (z == 0) || (x >= _gridWidth - 2) || (z == _gridDepth - 1))
+                    {
+                        TileGrid[x][z].SetAsPathTile(Tile_Path_Colors[(x + z) % Tile_Path_Colors.Length]);
+                    }
+                    else
+                    {
+                        TileGrid[x][z].SetHealthyColour(Tile_Healthy_Colors[(x + z) % Tile_Healthy_Colors.Length]);
+                    }
                 }
+            }
+
+            for (int i = 0; i < _startingPlantCount; i++)
+            {
+                Vector3 plantLocation = GetRandomTileCenter();
+
+                GameObject plant = Instantiate(_plantPrefab);
+                plant.name = $"Plant {i}";
+
+                plant.transform.position = plantLocation;
+                plant.transform.parent = transform;
             }
         }
 
         private static readonly Color[] Tile_Healthy_Colors = {new Color(0.0f, 0.6f, 0.0f), new Color(0.0f, 0.4f, 0.0f)};
+        private static readonly Color[] Tile_Path_Colors = {new Color(0.6f, 0.6f, 0.6f), new Color(0.4f, 0.4f, 0.4f)};
     }
 }

@@ -10,6 +10,7 @@ namespace PlayingField
         private float _damageFraction;
         private int _activeDamageSources;
         private bool _repairsInProgress;
+        private bool _immuneToDamage;
 
         public Vector3 Position { get { return _transform.position; } }
 
@@ -20,6 +21,13 @@ namespace PlayingField
             _material = GetComponentInChildren<MeshRenderer>().material;
 
             ColourizeForDamage();
+        }
+
+        public void SetAsPathTile(Color pathColor)
+        {
+            _immuneToDamage = true;
+            _material = GetComponentInChildren<MeshRenderer>().material;
+            _material.color = pathColor;
         }
 
         private void ColourizeForDamage()
@@ -39,19 +47,23 @@ namespace PlayingField
 
         private void OnTriggerEnter(Collider collider)
         {
-            switch (collider.tag)
-            {
-                case "Rain": _activeDamageSources += 1; break;
-                case "Repair Ground": _repairsInProgress = true; break;
-            }
+            HandleTriggerEvent(collider.tag, true);
         }
 
         private void OnTriggerExit(Collider collider)
         {
-            switch (collider.tag)
+            HandleTriggerEvent(collider.tag, false);
+        }
+
+        private void HandleTriggerEvent(string tag, bool enteredCollision)
+        {
+            if (!_immuneToDamage)
             {
-                case "Rain": _activeDamageSources -= 1; break;
-                case "Repair Ground": _repairsInProgress = false; break;
+                switch (tag)
+                {
+                    case "Rain": _activeDamageSources = enteredCollision ? 1 : -1; break;
+                    case "Repair Ground": _repairsInProgress = enteredCollision; break;
+                }
             }
         }
 

@@ -248,8 +248,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tilePrefab: {fileID: 6186901187292049283, guid: a75858df0cba8104fbaa0ff9b20ceae2,
     type: 3}
+  _plantPrefab: {fileID: 3463002155715871614, guid: 9a0a6bee95d1b0a41bf004d32c61d708,
+    type: 3}
   _gridWidth: 30
   _gridDepth: 15
+  _startingPlantCount: 4
 --- !u!4 &599570856
 Transform:
   m_ObjectHideFlags: 0

@@ -9,7 +9,6 @@ namespace Rain
         private Transform _transform;
         private Rigidbody _rigidbody;
         private PlayingFieldGrid _grid;
-        private bool _enteredCameraField;
 
         private void Awake()
         {
@@ -35,7 +34,6 @@ namespace Rain
 
             _transform.position = new Vector3(targetLocation.x, Random.Range(5.0f, 7.0f), targetLocation.z) - (direction * 20.0f);
             _rigidbody.velocity = direction * Random.Range(1.0f, 5.0f);
-            _enteredCameraField = false;
         }
     }
 }
