@@ -12,7 +12,9 @@ namespace Smog
         [SerializeField] private float _particleDensity = 0.5f;
         private ParticleSystem _particles;
 
-        public event Action<bool> SmogLimitReached;
+        public event Action SmogCleared;
+
+        public float SmogDensity { get { return _particleDensity; } }
 
         private List<ISmogDensityChangeModifier> changeRateModifiers = new List<ISmogDensityChangeModifier>();
 
@@ -49,9 +51,9 @@ namespace Smog
 
             SetSmogDensity();
 
-            if ((_particleDensity <= 0.0f) || (_particleDensity >= 1.0f))
+            if (_particleDensity <= 0.0f)
             {
-                SmogLimitReached?.Invoke(_particleDensity <= 0.0f);
+                SmogCleared?.Invoke();
             }
         }
     }

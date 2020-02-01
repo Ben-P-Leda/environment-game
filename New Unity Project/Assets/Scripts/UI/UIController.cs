@@ -1,4 +1,5 @@
-﻿using Smog;
+﻿using Plants;
+using Smog;
 using UnityEngine;
 
 namespace UI
@@ -11,15 +12,13 @@ namespace UI
         {
             _animator = GetComponent<Animator>();
 
-            FindObjectOfType<SmogOverlay>().SmogLimitReached += HandleSmogLimitReached;
+            //FindObjectOfType<SmogOverlay>().SmogLimitReached += HandleSmogLimitReached;
+            FindObjectOfType<PlantPool>().AllPlantsHaveDied += DisplayGameOver;
         }
 
-        private void HandleSmogLimitReached(bool smogWasCleared)
+        private void DisplayGameOver()
         {
-            if (!smogWasCleared)
-            {
-                _animator.SetTrigger("Lose Game");
-            }
+            _animator.SetTrigger("Lose Game");
         }
     }
 }

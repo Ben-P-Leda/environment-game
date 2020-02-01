@@ -69,6 +69,8 @@
     <Compile Include="Assets\Scripts\Game Management\GameController.cs" />
     <Compile Include="Assets\Scripts\Interfaces\ISmogDensityChangeModifier.cs" />
     <Compile Include="Assets\Scripts\Interfaces\ISuspendOnSmogLimitReached.cs" />
+    <Compile Include="Assets\Scripts\Plants\PlantLifecycle.cs" />
+    <Compile Include="Assets\Scripts\Plants\PlantPool.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerIdleEvent.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSetup.cs" />

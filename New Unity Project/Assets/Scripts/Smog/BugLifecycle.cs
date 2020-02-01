@@ -13,6 +13,7 @@ namespace Smog
         private Animator _animator;
         private PlayingFieldGrid _playingFieldGrid;
         private SmogOverlay _smogOverlay;
+        private PlayingFieldTile _destinationTile;
         private bool _entryComplete;
         private float _scale;
 
@@ -31,8 +32,8 @@ namespace Smog
 
         private void OnEnable()
         {
-            PlayingFieldTile targetTile = _playingFieldGrid.GetRandomTile(true);
-            if (targetTile == null)
+            _destinationTile = _playingFieldGrid.GetRandomTile(true);
+            if (_destinationTile == null)
             {
                 gameObject.SetActive(false);
                 return;
@@ -40,11 +41,11 @@ namespace Smog
 
             _scale = 0.5f;
 
-            targetTile.ObstructedBy = TileBlockers.Bug;
-            _transform.position = targetTile.Position + (Vector3.up * 20.0f);
+            _destinationTile.ObstructedBy = TileBlockers.Bug;
+            _transform.position = _destinationTile.Position + (Vector3.up * 20.0f);
             _transform.localScale = Vector3.one * _scale;
 
-            _rigidbody.velocity = new Vector3(0.0f, -5.0f, 0.0f);
+            _rigidbody.velocity = new Vector3(0.0f, -1.0f, 0.0f);
         }
 
         private void FixedUpdate()
@@ -60,14 +61,33 @@ namespace Smog
             {
                 _scale = Mathf.Clamp01(_scale + Time.fixedDeltaTime * 0.03f);
                 _transform.localScale = Vector3.one * _scale;
+
+                if (!_destinationTile.gameObject.activeInHierarchy)
+                {
+                    ChangeDestinationTile();
+                }
             }
+        }
+
+        private void ChangeDestinationTile()
+        {
+            // TODO: Sort this logic!
         }
 
         private void OnTriggerEnter(Collider collider)
         {
             if (collider.tag == "Damage Collider")
             {
+                _destinationTile.ObstructedBy = TileBlockers.None;
                 gameObject.SetActive(false);
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if ((collision.transform.name == "Player Character Container") && (!_entryComplete) && (_transform.position.y > 1.6))
+            {
+                ChangeDestinationTile();
             }
         }
     }
