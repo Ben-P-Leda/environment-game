@@ -1,4 +1,5 @@
-﻿using PlayingField;
+﻿using System.Linq;
+using PlayingField;
 using UnityEngine;
 
 namespace Player
@@ -13,9 +14,19 @@ namespace Player
         private Rigidbody _rigidbody;
         private Animator _animator;
         private PlayingFieldGrid _playingFieldGrid;
+
+        private GameObject _hammer;
+
         private bool _isMoving;
         private bool _isFalling;
         private bool _isRepairing;
+        private bool _attackInProgress;
+
+        private bool _hammerMode
+        {
+            get { return _hammer.activeInHierarchy; }
+            set { _hammer.SetActive(value); }
+        }
 
         private void Awake()
         {
@@ -23,6 +34,15 @@ namespace Player
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponentInChildren<Animator>();
             _playingFieldGrid = FindObjectOfType<PlayingFieldGrid>();
+
+            _hammer = GetComponentsInChildren<Transform>().First(x => x.name == "Hammer Container").gameObject;
+
+            _animator.GetBehaviour<PlayerIdleEvent>().EnteredStateCallback += HandleEnterIdleAnimation;
+        }
+
+        private void HandleEnterIdleAnimation()
+        {
+            _attackInProgress = false;
         }
 
         private void Start()
@@ -35,6 +55,10 @@ namespace Player
             _isMoving = false;
             _isFalling = false;
             _isRepairing = false;
+            _attackInProgress = false;
+
+            _hammerMode = true;
+
             _transform.position = _playingFieldGrid.TileGrid[_startGridX][_startGridZ].Position;
         }
 
@@ -59,20 +83,25 @@ namespace Player
             }
         }
 
-        public bool Rep;
-
         private void HandleActionInput()
         {
             if (!_isFalling)
             {
-                _isRepairing = Input.GetButton("Jump");
-                Rep = _isRepairing;
+                if (!_hammerMode)
+                {
+                    _isRepairing = Input.GetButton("Jump");
+                }
+                else if ((!_attackInProgress) && (Input.GetButtonDown("Jump")))
+                {
+                    _attackInProgress = true;
+                    _animator.SetTrigger("Attack");
+                }
             }
         }
 
         private void HandleMovementInput()
         {
-            if ((_isFalling) || (_isRepairing))
+            if ((_isFalling) || (_isRepairing) || (_attackInProgress))
             {
                 StopHorizontalMovement();
                 return;
