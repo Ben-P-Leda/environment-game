@@ -43,10 +43,10 @@ GameObject:
   - component: {fileID: 7663392277157286824}
   - component: {fileID: 3362431956110752930}
   - component: {fileID: 3580207861040300634}
-  - component: {fileID: 5982838178584324977}
+  - component: {fileID: 4758531884395845680}
   m_Layer: 8
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: Damage Collider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,20 +111,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &5982838178584324977
-CapsuleCollider:
+--- !u!65 &4758531884395845680
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2908771381686974053}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 2.0000005, z: 1.0000001}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4077257265301046944
 GameObject:
   m_ObjectHideFlags: 0

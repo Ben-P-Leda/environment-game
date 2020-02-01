@@ -8,6 +8,8 @@ namespace Rain
     {
         [SerializeField] private GameObject _cloudPrefab = null;
         [SerializeField] private int _poolSize = 5;
+        [SerializeField] private float _minimumCloudInterval = 5.0f;
+        [SerializeField] private float _maximumCloudInterval = 15.0f;
 
         private ObjectPool _cloudPool;
 
@@ -23,7 +25,7 @@ namespace Rain
 
         private IEnumerator StartNextRainCloud()
         {
-            yield return new WaitForSeconds(Random.Range(3.0f, 7.0f));
+            yield return new WaitForSeconds(Random.Range(_maximumCloudInterval, _maximumCloudInterval));
             _cloudPool.GetFirstAvailable()?.SetActive(true);
 
             StartCoroutine(StartNextRainCloud());

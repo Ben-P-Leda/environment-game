@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Rain
   - Repair Ground
+  - Damage Collider
   layers:
   - Default
   - TransparentFX
