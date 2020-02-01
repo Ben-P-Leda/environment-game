@@ -507,6 +507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272bbc506b65530408a6eeb9ca4bb5b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _particleDensity: 0.3
 --- !u!1 &599570854
 GameObject:
   m_ObjectHideFlags: 0
@@ -822,7 +823,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1437653993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1036,7 +1037,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!198 &6391751694572827394
 ParticleSystem:
   m_ObjectHideFlags: 0
