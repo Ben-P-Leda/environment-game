@@ -17,6 +17,7 @@ namespace Player
 
         private Transform _hammer;
         private Transform _pickaxe;
+        private Transform _wateringCan;
 
         private bool _isMoving;
         private bool _isFalling;
@@ -33,6 +34,7 @@ namespace Player
 
             _hammer = GetComponentsInChildren<Transform>().First(x => x.name == "Hammer Container").transform;
             _pickaxe = GetComponentsInChildren<Transform>().First(x => x.name == "Pickaxe Container").transform;
+            _wateringCan = GetComponentsInChildren<Transform>().First(x => x.name == "Can Container").transform;
 
             _animator.GetBehaviour<PlayerIdleEvent>().EnteredStateCallback += HandleEnterIdleAnimation;
         }
@@ -44,7 +46,7 @@ namespace Player
 
         private void Start()
         {
-            ActivateTool(Tool.Pickaxe);
+            ActivateTool(Tool.Can);
 
             Respawn();
         }
@@ -54,6 +56,7 @@ namespace Player
             _activeTool = toActivate;
             _pickaxe.localScale = _activeTool == Tool.Pickaxe ? Vector3.one : Vector3.zero;
             _hammer.localScale = _activeTool == Tool.Hammer ? Vector3.one : Vector3.zero;
+            _wateringCan.localScale = _activeTool == Tool.Can ? Vector3.one : Vector3.zero;
         }
 
         private void Respawn()
@@ -147,7 +150,8 @@ namespace Player
         private enum Tool
         {
             Hammer,
-            Pickaxe
+            Pickaxe,
+            Can
         }
     }
 }
