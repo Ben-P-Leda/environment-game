@@ -17,10 +17,10 @@ namespace Rain
 
         private void FixedUpdate()
         {
-            if (Input.anyKeyDown)
-            {
-                _cloudPool.GetFirstAvailable().SetActive(true);
-            }
+            //if (Input.anyKeyDown)
+            //{
+            //    _cloudPool.GetFirstAvailable().SetActive(true);
+            //}
         }
     }
 }
