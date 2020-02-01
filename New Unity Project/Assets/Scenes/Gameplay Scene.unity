@@ -133,6 +133,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Character Container
       objectReference: {fileID: 0}
+    - target: {fileID: 7169059851281585033, guid: 530e483a9e639b54dba4fed159262a25,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 7169059851281585032, guid: 530e483a9e639b54dba4fed159262a25,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -192,6 +197,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _movementSpeed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095333007391898205, guid: 530e483a9e639b54dba4fed159262a25,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 530e483a9e639b54dba4fed159262a25, type: 3}

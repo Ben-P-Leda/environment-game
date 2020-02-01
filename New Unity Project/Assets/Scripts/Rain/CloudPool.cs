@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.Collections;
+using Common;
 using UnityEngine;
 
 namespace Rain
@@ -15,12 +16,17 @@ namespace Rain
             _cloudPool = new ObjectPool(_cloudPrefab, _poolSize, transform);
         }
 
-        private void FixedUpdate()
+        private void Start()
         {
-            //if (Input.anyKeyDown)
-            //{
-            //    _cloudPool.GetFirstAvailable().SetActive(true);
-            //}
+            StartCoroutine(StartNextRainCloud());
+        }
+
+        private IEnumerator StartNextRainCloud()
+        {
+            yield return new WaitForSeconds(Random.Range(3.0f, 7.0f));
+            _cloudPool.GetFirstAvailable()?.SetActive(true);
+
+            StartCoroutine(StartNextRainCloud());
         }
     }
 }

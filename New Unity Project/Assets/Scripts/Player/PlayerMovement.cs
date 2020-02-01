@@ -41,6 +41,7 @@ namespace Player
         private void FixedUpdate()
         {
             HandleFalling();
+            HandleActionInput();
             HandleMovementInput();
             UpdateAnimationSettings();
         }
@@ -58,9 +59,20 @@ namespace Player
             }
         }
 
+        public bool Rep;
+
+        private void HandleActionInput()
+        {
+            if (!_isFalling)
+            {
+                _isRepairing = Input.GetButton("Jump");
+                Rep = _isRepairing;
+            }
+        }
+
         private void HandleMovementInput()
         {
-            if (_isFalling)
+            if ((_isFalling) || (_isRepairing))
             {
                 StopHorizontalMovement();
                 return;
@@ -90,6 +102,7 @@ namespace Player
         {
             _animator.SetBool("Is Moving", _isMoving);
             _animator.SetBool("Is Falling", _isFalling);
+            _animator.SetBool("Is Repairing", _isRepairing);
         }
 
         private const float MovementThreshold = 0.01f;
