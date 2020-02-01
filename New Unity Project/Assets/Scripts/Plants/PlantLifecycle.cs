@@ -1,10 +1,11 @@
-﻿using PlayingField;
+﻿using Interfaces;
+using PlayingField;
 using Smog;
 using UnityEngine;
 
 namespace Plants
 {
-    public class PlantLifecycle : MonoBehaviour
+    public class PlantLifecycle : MonoBehaviour, ISmogDensityChangeModifier
     {
         private Transform _transform;
         private PlayingFieldGrid _playingFieldGrid;
@@ -14,11 +15,15 @@ namespace Plants
         private float _growthTimeRemaining;
         private float _timeToNextWaterAccept;
 
+        public float ChangeRateModifier { get { return gameObject.activeInHierarchy ? -0.04f * _scale : 0.0f; } }
+
         private void Awake()
         {
             _transform = transform;
             _playingFieldGrid = FindObjectOfType<PlayingFieldGrid>();
             _smogOverlay = FindObjectOfType<SmogOverlay>();
+
+            _smogOverlay.RegisterDensityChangeModifier(this);
         }
 
         private void OnEnable()
@@ -60,11 +65,8 @@ namespace Plants
 
         private void OnTriggerEnter(Collider collider)
         {
-            Debug.Log($"{collider.tag} - {_transform.name} - {_timeToNextWaterAccept}");
-
             if ((collider.tag == "Water Plant") && (_timeToNextWaterAccept <= 0.0f))
             {
-                Debug.Log("Topped up!");
                 _timeToNextWaterAccept = 1.0f;
                 _growthTimeRemaining = 0.4f;
             }
