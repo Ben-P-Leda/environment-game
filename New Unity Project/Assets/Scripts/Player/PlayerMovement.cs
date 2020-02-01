@@ -15,18 +15,14 @@ namespace Player
         private Animator _animator;
         private PlayingFieldGrid _playingFieldGrid;
 
-        private GameObject _hammer;
+        private Transform _hammer;
+        private Transform _pickaxe;
 
         private bool _isMoving;
         private bool _isFalling;
-        private bool _isRepairing;
-        private bool _attackInProgress;
+        private bool _actionInProgress;
 
-        private bool _hammerMode
-        {
-            get { return _hammer.activeInHierarchy; }
-            set { _hammer.SetActive(value); }
-        }
+        private Tool _activeTool;
 
         private void Awake()
         {
@@ -35,29 +31,35 @@ namespace Player
             _animator = GetComponentInChildren<Animator>();
             _playingFieldGrid = FindObjectOfType<PlayingFieldGrid>();
 
-            _hammer = GetComponentsInChildren<Transform>().First(x => x.name == "Hammer Container").gameObject;
+            _hammer = GetComponentsInChildren<Transform>().First(x => x.name == "Hammer Container").transform;
+            _pickaxe = GetComponentsInChildren<Transform>().First(x => x.name == "Pickaxe Container").transform;
 
             _animator.GetBehaviour<PlayerIdleEvent>().EnteredStateCallback += HandleEnterIdleAnimation;
         }
 
         private void HandleEnterIdleAnimation()
         {
-            _attackInProgress = false;
+            _actionInProgress = false;
         }
 
         private void Start()
         {
+            ActivateTool(Tool.Pickaxe);
+
             Respawn();
+        }
+
+        private void ActivateTool(Tool toActivate)
+        {
+            _activeTool = toActivate;
+            _pickaxe.localScale = _activeTool == Tool.Pickaxe ? Vector3.one : Vector3.zero;
+            _hammer.localScale = _activeTool == Tool.Hammer ? Vector3.one : Vector3.zero;
         }
 
         private void Respawn()
         {
             _isMoving = false;
             _isFalling = false;
-            _isRepairing = false;
-            _attackInProgress = false;
-
-            _hammerMode = true;
 
             _transform.position = _playingFieldGrid.TileGrid[_startGridX][_startGridZ].Position;
         }
@@ -87,21 +89,25 @@ namespace Player
         {
             if (!_isFalling)
             {
-                if (!_hammerMode)
+                switch (_activeTool)
                 {
-                    _isRepairing = Input.GetButton("Jump");
-                }
-                else if ((!_attackInProgress) && (Input.GetButtonDown("Jump")))
-                {
-                    _attackInProgress = true;
-                    _animator.SetTrigger("Attack");
+                    case Tool.Hammer:
+                        if ((!_actionInProgress) && (Input.GetButtonDown("Jump")))
+                        {
+                            _actionInProgress = true;
+                            _animator.SetTrigger("Attack");
+                        }
+                        break;
+                    case Tool.Pickaxe:
+                        _actionInProgress = Input.GetButton("Jump");
+                        break;
                 }
             }
         }
 
         private void HandleMovementInput()
         {
-            if ((_isFalling) || (_isRepairing) || (_attackInProgress))
+            if ((_isFalling) || (_actionInProgress))
             {
                 StopHorizontalMovement();
                 return;
@@ -131,11 +137,17 @@ namespace Player
         {
             _animator.SetBool("Is Moving", _isMoving);
             _animator.SetBool("Is Falling", _isFalling);
-            _animator.SetBool("Is Repairing", _isRepairing);
+            _animator.SetBool("Is Repairing", _actionInProgress && _activeTool == Tool.Pickaxe);
         }
 
         private const float MovementThreshold = 0.01f;
         private const float Fall_Threshold = -0.1f;
         private const float Respawn_Threshold = -15.0f;
+
+        private enum Tool
+        {
+            Hammer,
+            Pickaxe
+        }
     }
 }
