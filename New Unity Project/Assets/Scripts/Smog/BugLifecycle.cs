@@ -15,7 +15,7 @@ namespace Smog
         private bool _entryComplete;
         private float _scale;
 
-        public float ChangeRateModifier { get { return gameObject.activeInHierarchy && _entryComplete ? 0.4f * _scale : 0.0f; } }
+        public float ChangeRateModifier { get { return gameObject.activeInHierarchy && _entryComplete ? 0.3f * _scale : 0.0f; } }
 
         private void Awake()
         {
@@ -52,6 +52,12 @@ namespace Smog
                 _entryComplete = true;
                 _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
                 _animator.SetTrigger("Has Landed");
+            }
+
+            if (_entryComplete)
+            {
+                _scale = Mathf.Clamp01(_scale + Time.fixedDeltaTime * 0.03f);
+                _transform.localScale = Vector3.one * _scale;
             }
         }
 
