@@ -16,21 +16,21 @@ namespace PlayingField
         private bool _isFalling;
         private bool _actionInProgress;
 
-        private Tool _activeTool;
+        private PlayerTools _activeTool;
 
-        public void Initialize(Vector3 position, Tool startingSelectedTool)
+        public void Initialize(Vector3 position, PlayerTools startingSelectedTool)
         {
             _transform.position = position;
 
             ActivateToolForPlayer(startingSelectedTool);
         }
 
-        public void ActivateToolForPlayer(Tool toActivate)
+        public void ActivateToolForPlayer(PlayerTools toActivate)
         {
             _activeTool = toActivate;
-            _pickaxe.localScale = _activeTool != Tool.Pickaxe ? Vector3.one : Vector3.zero;
-            _hammer.localScale = _activeTool != Tool.Hammer ? Vector3.one : Vector3.zero;
-            _wateringCan.localScale = _activeTool != Tool.Can ? Vector3.one : Vector3.zero;
+            _pickaxe.localScale = _activeTool != PlayerTools.Pickaxe ? Vector3.one : Vector3.zero;
+            _hammer.localScale = _activeTool != PlayerTools.Hammer ? Vector3.one : Vector3.zero;
+            _wateringCan.localScale = _activeTool != PlayerTools.Can ? Vector3.one : Vector3.zero;
         }
 
         private void Awake()

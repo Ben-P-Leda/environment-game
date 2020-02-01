@@ -29,7 +29,7 @@ namespace Rain
 
         private void OnEnable()
         {
-            Vector3 targetLocation = _grid.GetRandomTileCenter();
+            Vector3 targetLocation = _grid.GetRandomTile(false).Position;
             Vector3 direction = Quaternion.Euler(0.0f, Random.Range(20.0f, 160.0f), 0.0f) * Vector3.right;
 
             _transform.position = new Vector3(targetLocation.x, Random.Range(5.0f, 7.0f), targetLocation.z) - (direction * 20.0f);

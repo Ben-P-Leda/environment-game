@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Common\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Common\RendererCallback.cs" />
+    <Compile Include="Assets\Scripts\Enums\TileBlockers.cs" />
     <Compile Include="Assets\Scripts\Enums\Tools.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerIdleEvent.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
@@ -73,6 +74,8 @@
     <Compile Include="Assets\Scripts\Playing Field\ToolCarousel.cs" />
     <Compile Include="Assets\Scripts\Rain\CloudMovement.cs" />
     <Compile Include="Assets\Scripts\Rain\CloudPool.cs" />
+    <Compile Include="Assets\Scripts\Smog\BugLifecycle.cs" />
+    <Compile Include="Assets\Scripts\Smog\BugYeeter.cs" />
     <Compile Include="Assets\Scripts\Smog\SmogOverlay.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Other Development/Global Game Jam 2020/environment-game/New Unity Project/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

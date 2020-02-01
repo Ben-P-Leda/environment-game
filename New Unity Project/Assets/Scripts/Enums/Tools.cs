@@ -1,6 +1,6 @@
 ﻿namespace Enums
 {
-    public enum Tool
+    public enum PlayerTools
     {
         Hammer,
         Pickaxe,

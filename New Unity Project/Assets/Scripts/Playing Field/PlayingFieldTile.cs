@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Enums;
+using UnityEngine;
 
 namespace PlayingField
 {
@@ -13,6 +14,8 @@ namespace PlayingField
         private bool _immuneToDamage;
 
         public Vector3 Position { get { return _transform.position; } }
+        public TileBlockers ObstructedBy { get; set; }
+        public bool AvailableForObjectPlacement { get {  return gameObject.activeInHierarchy && ObstructedBy == TileBlockers.None;} }
 
         public void SetHealthyColour(Color healthyColor)
         {
@@ -28,6 +31,8 @@ namespace PlayingField
             _immuneToDamage = true;
             _material = GetComponentInChildren<MeshRenderer>().material;
             _material.color = pathColor;
+
+            ObstructedBy = TileBlockers.Path;
         }
 
         private void ColourizeForDamage()
@@ -43,6 +48,8 @@ namespace PlayingField
             _transform = transform;
             _activeDamageSources = 0;
             _repairsInProgress = false;
+
+            ObstructedBy = TileBlockers.None;
         }
 
         private void OnTriggerEnter(Collider collider)

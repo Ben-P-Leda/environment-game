@@ -7,7 +7,7 @@ namespace Player
     public class PlayerSetup : MonoBehaviour
     {
         [SerializeField] private bool _playsFromLeft = true;
-        [SerializeField] private Tool _startingTool = Tool.Pickaxe;
+        [SerializeField] private PlayerTools _startingTool = PlayerTools.Pickaxe;
 
         private void Start()
         {

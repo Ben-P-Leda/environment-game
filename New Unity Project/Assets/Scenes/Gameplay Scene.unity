@@ -901,6 +901,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playsFromLeft: 1
   _startingTool: 1
+--- !u!1 &1977086839
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1977086841}
+  - component: {fileID: 1977086840}
+  m_Layer: 0
+  m_Name: Bugs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1977086840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977086839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94ca0cbc8289eef43ba7b763005d8d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bugPrefab: {fileID: 3337549810335270418, guid: 0ad5b01ca805aa6459519978a48f8ff5,
+    type: 3}
+  _poolSize: 10
+  _minimumBugInterval: 5
+  _maximumBugInterval: 15
+--- !u!4 &1977086841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977086839}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2141491040 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7169059851281585032, guid: 530e483a9e639b54dba4fed159262a25,

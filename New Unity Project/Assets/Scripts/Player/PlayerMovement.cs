@@ -23,10 +23,10 @@ namespace Player
         private bool _actionInProgress;
 
         private Vector3 _startPosition;
-        private Tool _activeTool;
+        private PlayerTools _activeTool;
         private ToolCarousel _carousel;
 
-        public void InitializePlayer(Vector3 startPosition, Tool startingTool, ToolCarousel carousel)
+        public void InitializePlayer(Vector3 startPosition, PlayerTools startingTool, ToolCarousel carousel)
         {
             _startPosition = startPosition;
             _carousel = carousel;
@@ -53,12 +53,12 @@ namespace Player
             _actionInProgress = false;
         }
 
-        private void ActivateTool(Tool toActivate)
+        private void ActivateTool(PlayerTools toActivate)
         {
             _activeTool = toActivate;
-            _pickaxe.localScale = _activeTool == Tool.Pickaxe ? Vector3.one : Vector3.zero;
-            _hammer.localScale = _activeTool == Tool.Hammer ? Vector3.one : Vector3.zero;
-            _wateringCan.localScale = _activeTool == Tool.Can ? Vector3.one : Vector3.zero;
+            _pickaxe.localScale = _activeTool == PlayerTools.Pickaxe ? Vector3.one : Vector3.zero;
+            _hammer.localScale = _activeTool == PlayerTools.Hammer ? Vector3.one : Vector3.zero;
+            _wateringCan.localScale = _activeTool == PlayerTools.Can ? Vector3.one : Vector3.zero;
         }
 
         private void Respawn()
@@ -96,14 +96,14 @@ namespace Player
             {
                 switch (_activeTool)
                 {
-                    case Tool.Hammer:
+                    case PlayerTools.Hammer:
                         if ((!_actionInProgress) && (Input.GetButtonDown("Jump")))
                         {
                             _actionInProgress = true;
                             _animator.SetTrigger("Attack");
                         }
                         break;
-                    case Tool.Pickaxe:
+                    case PlayerTools.Pickaxe:
                         _actionInProgress = Input.GetButton("Jump");
                         break;
                 }
@@ -142,14 +142,14 @@ namespace Player
         {
             _animator.SetBool("Is Moving", _isMoving);
             _animator.SetBool("Is Falling", _isFalling);
-            _animator.SetBool("Is Repairing", _actionInProgress && _activeTool == Tool.Pickaxe);
+            _animator.SetBool("Is Repairing", _actionInProgress && _activeTool == PlayerTools.Pickaxe);
         }
 
         private void OnTriggerEnter(Collider collider)
         {
             if (collider.name == _carousel.name)
             {
-                Tool nextTool = (Tool)(((int)_activeTool + 1) % Enum.GetNames(typeof(Tool)).Length);
+                PlayerTools nextTool = (PlayerTools)(((int)_activeTool + 1) % Enum.GetNames(typeof(PlayerTools)).Length);
                 ActivateTool(nextTool);
                 _carousel.ActivateToolForPlayer(nextTool);
             }
