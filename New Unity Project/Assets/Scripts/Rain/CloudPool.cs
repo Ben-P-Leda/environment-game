@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using Common;
+using GameManagement;
+using Interfaces;
 using UnityEngine;
 
 namespace Rain
 {
-    public class CloudPool : MonoBehaviour
+    public class CloudPool : MonoBehaviour, ISuspendOnSmogLimitReached
     {
         [SerializeField] private GameObject _cloudPrefab = null;
         [SerializeField] private int _poolSize = 5;
@@ -16,6 +18,8 @@ namespace Rain
         private void Awake()
         {
             _cloudPool = new ObjectPool(_cloudPrefab, _poolSize, transform);
+
+            FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
         }
 
         private void Start()
@@ -26,9 +30,13 @@ namespace Rain
         private IEnumerator StartNextRainCloud()
         {
             yield return new WaitForSeconds(Random.Range(_maximumCloudInterval, _maximumCloudInterval));
-            _cloudPool.GetFirstAvailable()?.SetActive(true);
 
-            StartCoroutine(StartNextRainCloud());
+            if (enabled)
+            {
+                _cloudPool.GetFirstAvailable()?.SetActive(true);
+
+                StartCoroutine(StartNextRainCloud());
+            }
         }
     }
 }

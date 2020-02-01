@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
 using Enums;
+using GameManagement;
+using Interfaces;
 using PlayingField;
 using UnityEngine;
 
 namespace Player
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour, ISuspendOnSmogLimitReached
     {
         [SerializeField] private float _movementSpeed = 5.0f;
 
@@ -46,6 +48,8 @@ namespace Player
             _wateringCan = GetComponentsInChildren<Transform>().First(x => x.name == "Can Container").transform;
 
             _animator.GetBehaviour<PlayerIdleEvent>().EnteredStateCallback += HandleEnterIdleAnimation;
+
+            FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
         }
 
         private void HandleEnterIdleAnimation()

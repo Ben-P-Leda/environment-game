@@ -1,10 +1,12 @@
 ﻿using Common;
+using GameManagement;
+using Interfaces;
 using PlayingField;
 using UnityEngine;
 
 namespace Rain
 {
-    public class CloudMovement : MonoBehaviour
+    public class CloudMovement : MonoBehaviour, ISuspendOnSmogLimitReached
     {
         private Transform _transform;
         private Rigidbody _rigidbody;
@@ -17,6 +19,7 @@ namespace Rain
             _grid = FindObjectOfType<PlayingFieldGrid>();
 
             GetComponentInChildren<RendererCallback>().VisibleStateChanged += HandleVisibilityStateChange;
+            FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
         }
 
         private void HandleVisibilityStateChange(bool becameVisible)

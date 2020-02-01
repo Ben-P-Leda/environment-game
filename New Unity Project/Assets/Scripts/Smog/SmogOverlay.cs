@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Common;
+using GameManagement;
+using Interfaces;
 using UnityEngine;
 
 namespace Smog
 {
-    public class SmogOverlay : MonoBehaviour
+    public class SmogOverlay : MonoBehaviour, ISuspendOnSmogLimitReached
     {
         [SerializeField] private float _particleDensity = 0.5f;
         private ParticleSystem _particles;
+
+        public event Action<bool> SmogLimitReached;
 
         private List<ISmogDensityChangeModifier> changeRateModifiers = new List<ISmogDensityChangeModifier>();
 
@@ -24,6 +28,8 @@ namespace Smog
         {
             _particles = GetComponent<ParticleSystem>();
             changeRateModifiers = new List<ISmogDensityChangeModifier>();
+
+            FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
         }
 
         private void SetSmogDensity()
@@ -42,6 +48,11 @@ namespace Smog
             _particleDensity = Mathf.Clamp01(_particleDensity + (Time.fixedDeltaTime * 0.1f * rateOfChange));
 
             SetSmogDensity();
+
+            if ((_particleDensity <= 0.0f) || (_particleDensity >= 1.0f))
+            {
+                SmogLimitReached?.Invoke(_particleDensity <= 0.0f);
+            }
         }
     }
 }

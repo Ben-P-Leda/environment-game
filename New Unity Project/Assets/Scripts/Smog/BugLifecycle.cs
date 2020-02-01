@@ -1,11 +1,12 @@
-﻿using Common;
-using Enums;
+﻿using Enums;
+using GameManagement;
+using Interfaces;
 using PlayingField;
 using UnityEngine;
 
 namespace Smog
 {
-    public class BugLifecycle : MonoBehaviour, ISmogDensityChangeModifier
+    public class BugLifecycle : MonoBehaviour, ISmogDensityChangeModifier, ISuspendOnSmogLimitReached
     {
         private Transform _transform;
         private Rigidbody _rigidbody;
@@ -25,6 +26,7 @@ namespace Smog
             _playingFieldGrid = FindObjectOfType<PlayingFieldGrid>();
 
             FindObjectOfType<SmogOverlay>().RegisterDensityChangeModifier(this);
+            FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
         }
 
         private void OnEnable()
