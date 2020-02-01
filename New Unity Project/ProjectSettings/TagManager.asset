@@ -7,6 +7,7 @@ TagManager:
   - Rain
   - Repair Ground
   - Damage Collider
+  - Plant
   layers:
   - Default
   - TransparentFX
