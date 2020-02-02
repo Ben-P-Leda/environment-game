@@ -13,6 +13,7 @@ namespace GameManagement
         private SmogOverlay _smogOverlay;
         private List<ISuspendOnSmogLimitReached> _scriptsToSuspendWhenGameEnds = new List<ISuspendOnSmogLimitReached>();
         private bool _gameOver;
+        private float _exitBlockTimer;
 
         public void RegisterScriptToSuspendWhenGameEnds(ISuspendOnSmogLimitReached toRegister)
         {
@@ -35,6 +36,7 @@ namespace GameManagement
                 scriptToSuspend.enabled = false;
             }
 
+            _exitBlockTimer = 2.0f;
             _gameOver = true;
         }
 
@@ -45,10 +47,12 @@ namespace GameManagement
 
         private void FixedUpdate()
         {
-            if ((_gameOver) && ((Input.GetButtonDown("P1:Action")) || (Input.GetButtonDown("P2:Action"))))
+            if ((_gameOver) && (_exitBlockTimer <= 0.0f) && ((Input.GetButtonDown("P1:Action")) || (Input.GetButtonDown("P2:Action"))))
             {
                 SceneManager.LoadScene("Start Scene");
             }
+
+            _exitBlockTimer = Mathf.Max(0.0f, _exitBlockTimer - Time.fixedDeltaTime);
         }
     }
 }
