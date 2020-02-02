@@ -25,6 +25,7 @@ namespace Player
         private bool _isFalling;
         private bool _actionInProgress;
         private bool _inProximityWithOtherPlayer;
+        private bool _isAtCarousel;
         private float _swapCooldown;
         private float _waterInCan;
 
@@ -91,7 +92,7 @@ namespace Player
             }
 
             ActivateTool(toActivate);
-            _carousel.ActivateToolForPlayer(toActivate);
+            
             _swapCooldown = 0.5f;
         }
 
@@ -106,6 +107,8 @@ namespace Player
             {
                 _waterInCan = 5.0f;
             }
+
+            _carousel.ActivateToolForPlayer(toActivate);
         }
 
         private void Respawn()
@@ -116,7 +119,9 @@ namespace Player
             _isFalling = false;
             _actionInProgress = false;
             _inProximityWithOtherPlayer = false;
+            _isAtCarousel = false;
             _swapCooldown = 0.0f;
+            _waterInCan = 5.0f;
         }
 
         private void FixedUpdate()
@@ -152,6 +157,11 @@ namespace Player
                     {
                         SwapTools?.Invoke(_activeTool, true);
                     }
+                }
+                else if ((_isAtCarousel) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
+                {
+                    PlayerTools nextTool = (PlayerTools)(((int)_activeTool + 1) % Enum.GetNames(typeof(PlayerTools)).Length);
+                    ActivateTool(nextTool);
                 }
                 else if ((_activeTool == PlayerTools.Hammer) && (!_actionInProgress) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
                 {
@@ -205,14 +215,20 @@ namespace Player
         {
             if (collider.name == _carousel.name)
             {
-                PlayerTools nextTool = (PlayerTools)(((int)_activeTool + 1) % Enum.GetNames(typeof(PlayerTools)).Length);
-                ActivateTool(nextTool);
-                _carousel.ActivateToolForPlayer(nextTool);
+                _isAtCarousel = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider collider)
+        {
+            if (collider.name == _carousel.name)
+            {
+                _isAtCarousel = false;
             }
         }
 
         private const float MovementThreshold = 0.01f;
-        private const float Fall_Threshold = -0.1f;
+        private const float Fall_Threshold = -0.5f;
         private const float Respawn_Threshold = -15.0f;
     }
 }
