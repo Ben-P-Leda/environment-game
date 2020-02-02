@@ -8,7 +8,6 @@ namespace PlayingField
     public class PlayingFieldGrid : MonoBehaviour
     {
         [SerializeField] private GameObject _tilePrefab = null;
-        [SerializeField] private GameObject _plantPrefab = null;
 
         [SerializeField] private int _gridWidth = 40;
         [SerializeField] private int _gridDepth = 40;
