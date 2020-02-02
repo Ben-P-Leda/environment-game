@@ -17,6 +17,7 @@ namespace Player
         private Rigidbody _rigidbody;
         private Animator _animator;
         private ParticleSystem _contactParticles;
+        private ParticleSystem _waterParticles;
 
         private Transform _hammer;
         private Transform _pickaxe;
@@ -53,7 +54,10 @@ namespace Player
             _transform = transform;
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponentInChildren<Animator>();
-            _contactParticles = GetComponentInChildren<ParticleSystem>();
+
+            ParticleSystem[] particleSystems = GetComponentsInChildren<ParticleSystem>();
+            _contactParticles = particleSystems.First(x => x.name == "Contact Particles");
+            _waterParticles = particleSystems.First(x => x.name == "Water Particles");
 
             _hammer = GetComponentsInChildren<Transform>().First(x => x.name == "Hammer Container").transform;
             _pickaxe = GetComponentsInChildren<Transform>().First(x => x.name == "Pickaxe Container").transform;
@@ -89,9 +93,14 @@ namespace Player
 
         private void HandleAnimationEvent(string message)
         {
-            if (message == "Use Water")
+            if ((message == "Use Water") && (_waterInCan > 0.0f))
             {
                 _waterInCan = Mathf.Max(_waterInCan - 1.0f, 0.0f);
+                _waterParticles.Play();
+            }
+            else if (message == "Stop Water")
+            {
+                _waterParticles.Stop();
             }
         }
 
