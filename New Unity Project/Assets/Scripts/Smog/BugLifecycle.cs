@@ -1,4 +1,5 @@
-﻿using Enums;
+﻿using Common;
+using Enums;
 using GameManagement;
 using Interfaces;
 using PlayingField;
@@ -14,6 +15,7 @@ namespace Smog
         private PlayingFieldGrid _playingFieldGrid;
         private SmogOverlay _smogOverlay;
         private PlayingFieldTile _destinationTile;
+        private ParticleSystem _exhaledParticles;
         private bool _entryComplete;
         private float _scale;
 
@@ -24,10 +26,25 @@ namespace Smog
             _transform = transform;
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponentInChildren<Animator>();
+            _exhaledParticles = GetComponentInChildren<ParticleSystem>();
             _playingFieldGrid = FindObjectOfType<PlayingFieldGrid>();
 
             FindObjectOfType<SmogOverlay>().RegisterDensityChangeModifier(this);
             FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
+
+            GetComponentInChildren<AnimationEventListener>().NotifyAnimationEvent += HandleAnimationEvent;
+        }
+
+        private void HandleAnimationEvent(string message)
+        {
+            if (message == "Start Smog")
+            {
+                _exhaledParticles.Play();
+            }
+            else if (message == "Stop Smog")
+            {
+                _exhaledParticles.Stop();
+            }
         }
 
         private void OnEnable()
@@ -50,7 +67,7 @@ namespace Smog
 
         private void FixedUpdate()
         {
-            if (_transform.position.y <= 0.0f)
+            if (_transform.position.y <= 0.01f)
             {
                 _entryComplete = true;
                 _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
