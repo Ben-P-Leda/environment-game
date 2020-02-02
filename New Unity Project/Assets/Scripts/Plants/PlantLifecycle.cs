@@ -16,6 +16,7 @@ namespace Plants
 
         public float ChangeRateModifier { get { return gameObject.activeInHierarchy ? -0.04f * _scale : 0.0f; } }
         public PlayingFieldTile TileLocation { set; private get; }
+        public float HealthFraction { get { return Mathf.Clamp01(_scale); } }
 
         private void Awake()
         {

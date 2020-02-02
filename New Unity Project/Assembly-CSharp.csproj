@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\Smog\BugYeeter.cs" />
     <Compile Include="Assets\Scripts\Smog\SmogOverlay.cs" />
     <Compile Include="Assets\Scripts\UI\GameStart.cs" />
+    <Compile Include="Assets\Scripts\UI\MeterDisplay.cs" />
     <Compile Include="Assets\Scripts\UI\UIController.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Other Development/Global Game Jam 2020/environment-game/New Unity Project/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
