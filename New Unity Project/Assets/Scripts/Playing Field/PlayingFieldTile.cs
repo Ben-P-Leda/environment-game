@@ -104,7 +104,7 @@ namespace PlayingField
             }
         }
 
-        private const float Seconds_Of_Damage_To_Destroy = 5.0f;
+        private const float Seconds_Of_Damage_To_Destroy = 1.0f;
         private const float Seconds_To_Repair = 3.0f;
     }
 }
