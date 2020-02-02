@@ -26,7 +26,7 @@ namespace Player
         private bool _actionInProgress;
         private bool _inProximityWithOtherPlayer;
         private bool _isAtCarousel;
-        private float _swapCooldown;
+        private float _actionCooldown;
         private float _waterInCan;
 
         private Vector3 _startPosition;
@@ -43,7 +43,7 @@ namespace Player
             _startPosition = startPosition;
             _carousel = carousel;
 
-            ActivateTool(startingTool);
+            ActivateTool(startingTool, 0.0f);
             Respawn();
         }
 
@@ -91,12 +91,10 @@ namespace Player
                 SwapTools?.Invoke(_activeTool, false);
             }
 
-            ActivateTool(toActivate);
-            
-            _swapCooldown = 0.5f;
+            ActivateTool(toActivate, 0.5f);
         }
 
-        private void ActivateTool(PlayerTools toActivate)
+        private void ActivateTool(PlayerTools toActivate, float cooldownDuration)
         {
             _activeTool = toActivate;
             _pickaxe.localScale = _activeTool == PlayerTools.Pickaxe ? Vector3.one : Vector3.zero;
@@ -109,6 +107,7 @@ namespace Player
             }
 
             _carousel.ActivateToolForPlayer(toActivate);
+            _actionCooldown = cooldownDuration;
         }
 
         private void Respawn()
@@ -120,7 +119,7 @@ namespace Player
             _actionInProgress = false;
             _inProximityWithOtherPlayer = false;
             _isAtCarousel = false;
-            _swapCooldown = 0.0f;
+            _actionCooldown = 0.0f;
             _waterInCan = 5.0f;
         }
 
@@ -131,7 +130,7 @@ namespace Player
             HandleMovementInput();
             UpdateAnimationSettings();
 
-            _swapCooldown = Mathf.Max(_swapCooldown - Time.fixedDeltaTime, 0.0f);
+            _actionCooldown = Mathf.Max(_actionCooldown - Time.fixedDeltaTime, 0.0f);
         }
 
         private void HandleFalling()
@@ -153,22 +152,25 @@ namespace Player
             {
                 if (_inProximityWithOtherPlayer)
                 {
-                    if ((_swapCooldown <= 0.0f) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
+                    if ((_actionCooldown <= 0.0f) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
                     {
                         SwapTools?.Invoke(_activeTool, true);
                     }
                 }
                 else if ((_isAtCarousel) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
                 {
-                    PlayerTools nextTool = (PlayerTools)(((int)_activeTool + 1) % Enum.GetNames(typeof(PlayerTools)).Length);
-                    ActivateTool(nextTool);
+                    if (_actionCooldown <= 0.0f)
+                    {
+                        PlayerTools nextTool = (PlayerTools) (((int) _activeTool + 1) % Enum.GetNames(typeof(PlayerTools)).Length);
+                        ActivateTool(nextTool, 0.25f);
+                    }
                 }
                 else if ((_activeTool == PlayerTools.Hammer) && (!_actionInProgress) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
                 {
                     _actionInProgress = true;
                     _animator.SetTrigger("Attack");
                 }
-                else if (_activeTool != PlayerTools.Hammer)
+                else if ((_activeTool == PlayerTools.Pickaxe) || ((_activeTool == PlayerTools.Can) && (_actionCooldown <= 0.0f)))
                 {
                     _actionInProgress = Input.GetButton($"{_controllerPrefix}:Action");
                 }
