@@ -16,6 +16,7 @@ namespace Player
         private Transform _transform;
         private Rigidbody _rigidbody;
         private Animator _animator;
+        private ParticleSystem _contactParticles;
 
         private Transform _hammer;
         private Transform _pickaxe;
@@ -52,6 +53,7 @@ namespace Player
             _transform = transform;
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponentInChildren<Animator>();
+            _contactParticles = GetComponentInChildren<ParticleSystem>();
 
             _hammer = GetComponentsInChildren<Transform>().First(x => x.name == "Hammer Container").transform;
             _pickaxe = GetComponentsInChildren<Transform>().First(x => x.name == "Pickaxe Container").transform;
@@ -74,6 +76,15 @@ namespace Player
         private void HandleProximityStateChange(bool enteredProximity)
         {
             _inProximityWithOtherPlayer = enteredProximity;
+
+            if (enteredProximity)
+            {
+                _contactParticles.Play();
+            }
+            else
+            {
+                _contactParticles.Stop();
+            }
         }
 
         private void HandleAnimationEvent(string message)
