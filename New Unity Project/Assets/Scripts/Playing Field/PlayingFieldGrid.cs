@@ -14,9 +14,8 @@ namespace PlayingField
         [SerializeField] private int _gridDepth = 40;
         [SerializeField] private int _startingPlantCount = 4;
 
+        private PlayingFieldTile[][] _tileGrid;
         private List<PlayingFieldTile> _tileList;
-
-        public PlayingFieldTile[][] TileGrid;
 
         public PlayingFieldTile GetRandomTile(bool onlyIncludeAvailable)
         {
@@ -31,15 +30,37 @@ namespace PlayingField
             return _tileList[Random.Range(0, _tileList.Count)];
         }
 
+        public PlayingFieldTile GetRandomClearPatch()
+        {
+            PlayingFieldTile center = GetRandomTile(true);
+            bool isClear = true;
+
+            if (center != null)
+            {
+                for (int x = center.GridX - 2; x < center.GridX + 3; x++)
+                {
+                    for (int z = center.GridZ - 2; z < center.GridZ + 3; z++)
+                    {
+                        if ((x >= 0) && (z >= 0) && (x < _gridWidth) && (z < _gridDepth))
+                        {
+                            isClear &= _tileGrid[x][z].ObstructedBy != TileBlockers.Plant;
+                        }
+                    }
+                }
+            }
+
+            return isClear ? center : null;
+        }
+
         public Vector3 GetCarouselPosition(bool playingFromLeft)
         {
-            return TileGrid[playingFromLeft ? 1 : _gridWidth - 2][_gridDepth / 2].Position;
+            return _tileGrid[playingFromLeft ? 1 : _gridWidth - 2][_gridDepth / 2].Position;
         }
 
         public Vector3 GetPlayerStartPosition(bool playingFromLeft)
         {
             int offset = _gridWidth / 4;
-            PlayingFieldTile startTile = TileGrid[playingFromLeft ? offset : _gridWidth - (offset + 1)][_gridDepth / 2];
+            PlayingFieldTile startTile = _tileGrid[playingFromLeft ? offset : _gridWidth - (offset + 1)][_gridDepth / 2];
             startTile.ObstructedBy = TileBlockers.PlayerStartPoint;
 
             return startTile.Position;
@@ -52,10 +73,10 @@ namespace PlayingField
             Vector3 frontLeft = new Vector3(_tilePrefab.transform.localScale.x * (_gridWidth - 1), 0.0f, _tilePrefab.transform.localScale.z * (_gridDepth - 1)) * -0.5f;
             Vector3 step = new Vector3(_tilePrefab.transform.localScale.x, 0.0f, _tilePrefab.transform.localScale.z);
 
-            TileGrid = new PlayingFieldTile[_gridWidth][];
+            _tileGrid = new PlayingFieldTile[_gridWidth][];
             for (int x = 0; x < _gridWidth; x++)
             {
-                TileGrid[x] = new PlayingFieldTile[_gridDepth];
+                _tileGrid[x] = new PlayingFieldTile[_gridDepth];
                 for (int z = 0; z < _gridDepth; z++)
                 {
                     GameObject tile = Instantiate(_tilePrefab);
@@ -64,17 +85,19 @@ namespace PlayingField
                     tile.transform.position = new Vector3(frontLeft.x + (step.x * x), 0.0f, frontLeft.z + (step.z * z));
                     tile.transform.parent = transform;
 
-                    TileGrid[x][z] = tile.GetComponent<PlayingFieldTile>();
+                    _tileGrid[x][z] = tile.GetComponent<PlayingFieldTile>();
+                    _tileGrid[x][z].GridX = x;
+                    _tileGrid[x][z].GridZ = z;
                     if ((x < 2) || (z == 0) || (x >= _gridWidth - 2) || (z == _gridDepth - 1))
                     {
-                        TileGrid[x][z].SetAsPathTile(Tile_Path_Colors[(x + z) % Tile_Path_Colors.Length]);
+                        _tileGrid[x][z].SetAsPathTile(Tile_Path_Colors[(x + z) % Tile_Path_Colors.Length]);
                     }
                     else
                     {
-                        TileGrid[x][z].SetHealthyColour(Tile_Healthy_Colors[(x + z) % Tile_Healthy_Colors.Length]);
+                        _tileGrid[x][z].SetHealthyColour(Tile_Healthy_Colors[(x + z) % Tile_Healthy_Colors.Length]);
                     }
 
-                    _tileList.Add(TileGrid[x][z]);
+                    _tileList.Add(_tileGrid[x][z]);
                 }
             }
         }

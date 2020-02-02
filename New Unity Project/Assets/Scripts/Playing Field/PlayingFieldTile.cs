@@ -13,6 +13,9 @@ namespace PlayingField
         private bool _repairsInProgress;
         private bool _immuneToDamage;
 
+        public int GridX { get; set; }
+        public int GridZ { get; set; }
+
         public Vector3 Position { get { return _transform.position; } }
         public TileBlockers ObstructedBy { get; set; }
         public bool AvailableForObjectPlacement { get {  return gameObject.activeInHierarchy && ObstructedBy == TileBlockers.None;} }
@@ -68,7 +71,7 @@ namespace PlayingField
             {
                 switch (tag)
                 {
-                    case "Rain": _activeDamageSources = enteredCollision ? 1 : -1; break;
+                    case "Rain": _activeDamageSources += enteredCollision ? 1 : -1; break;
                     case "Repair Ground": _repairsInProgress = enteredCollision; break;
                 }
             }
@@ -78,7 +81,7 @@ namespace PlayingField
         {
             bool damageValueChanged = false;
 
-            if (_activeDamageSources > 0)
+            if ((_activeDamageSources > 0) && (ObstructedBy != TileBlockers.Plant) && (ObstructedBy != TileBlockers.PlayerStartPoint))
             {
                 _damageFraction = Mathf.Clamp01(_damageFraction + (Seconds_Of_Damage_To_Destroy * Time.fixedDeltaTime * _activeDamageSources));
                 damageValueChanged = true;
@@ -101,7 +104,7 @@ namespace PlayingField
             }
         }
 
-        private const float Seconds_Of_Damage_To_Destroy = 2.0f;
+        private const float Seconds_Of_Damage_To_Destroy = 5.0f;
         private const float Seconds_To_Repair = 3.0f;
     }
 }
