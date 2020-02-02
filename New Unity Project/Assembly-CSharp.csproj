@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerIdleEvent.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSetup.cs" />
+    <Compile Include="Assets\Scripts\Player\ProximityDetector.cs" />
     <Compile Include="Assets\Scripts\Playing Field\PlayingFieldGrid.cs" />
     <Compile Include="Assets\Scripts\Playing Field\PlayingFieldTile.cs" />
     <Compile Include="Assets\Scripts\Playing Field\ToolCarousel.cs" />

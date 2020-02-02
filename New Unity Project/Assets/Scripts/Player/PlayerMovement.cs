@@ -23,12 +23,16 @@ namespace Player
         private bool _isMoving;
         private bool _isFalling;
         private bool _actionInProgress;
+        private bool _inProximityWithOtherPlayer;
+        private float _swapCooldown;
 
         private Vector3 _startPosition;
         private PlayerTools _activeTool;
         private ToolCarousel _carousel;
 
         private string _controllerPrefix;
+
+        public event Action<PlayerTools, bool> SwapTools;
 
         public void InitializePlayer(string controllerPrefix, Vector3 startPosition, PlayerTools startingTool, ToolCarousel carousel)
         {
@@ -52,12 +56,32 @@ namespace Player
 
             _animator.GetBehaviour<PlayerIdleEvent>().EnteredStateCallback += HandleEnterIdleAnimation;
 
+            GetComponentInChildren<ProximityDetector>().EnteredProximity += HandleProximityStateChange;
+
             FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
+
+            FindObjectsOfType<PlayerMovement>().First(x => x != this).SwapTools += HandleToolSwap;
         }
 
         private void HandleEnterIdleAnimation()
         {
             _actionInProgress = false;
+        }
+
+        private void HandleProximityStateChange(bool enteredProximity)
+        {
+            _inProximityWithOtherPlayer = enteredProximity;
+        }
+
+        private void HandleToolSwap(PlayerTools toActivate, bool originalSwapRequest)
+        {
+            if (originalSwapRequest)
+            {
+                SwapTools?.Invoke(_activeTool, false);
+            }
+
+            ActivateTool(toActivate);
+            _carousel.ActivateToolForPlayer(toActivate);
         }
 
         private void ActivateTool(PlayerTools toActivate)
@@ -74,6 +98,9 @@ namespace Player
 
             _isMoving = false;
             _isFalling = false;
+            _actionInProgress = false;
+            _inProximityWithOtherPlayer = false;
+            _swapCooldown = 0.0f;
         }
 
         private void FixedUpdate()
@@ -82,6 +109,8 @@ namespace Player
             HandleActionInput();
             HandleMovementInput();
             UpdateAnimationSettings();
+
+            _swapCooldown = Mathf.Max(_swapCooldown - Time.fixedDeltaTime, 0.0f);
         }
 
         private void HandleFalling()
@@ -101,7 +130,14 @@ namespace Player
         {
             if (!_isFalling)
             {
-                if ((_activeTool == PlayerTools.Hammer) && (!_actionInProgress) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
+                if (_inProximityWithOtherPlayer)
+                {
+                    if ((_swapCooldown <= 0.0f) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
+                    {
+                        SwapTools?.Invoke(_activeTool, true);
+                    }
+                }
+                else if ((_activeTool == PlayerTools.Hammer) && (!_actionInProgress) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
                 {
                     _actionInProgress = true;
                     _animator.SetTrigger("Attack");

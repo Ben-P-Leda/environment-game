@@ -10,6 +10,7 @@ TagManager:
   - Plant
   - Tool Carousel
   - Water Plant
+  - Proximity Collider
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - 
   - 
   - Character Physics
-  - 
+  - Character Proximity
   - 
   - 
   - 
