@@ -28,8 +28,11 @@ namespace Player
         private PlayerTools _activeTool;
         private ToolCarousel _carousel;
 
-        public void InitializePlayer(Vector3 startPosition, PlayerTools startingTool, ToolCarousel carousel)
+        private string _controllerPrefix;
+
+        public void InitializePlayer(string controllerPrefix, Vector3 startPosition, PlayerTools startingTool, ToolCarousel carousel)
         {
+            _controllerPrefix = controllerPrefix;
             _startPosition = startPosition;
             _carousel = carousel;
 
@@ -98,14 +101,14 @@ namespace Player
         {
             if (!_isFalling)
             {
-                if ((_activeTool == PlayerTools.Hammer) && (!_actionInProgress) && (Input.GetButtonDown("Jump")))
+                if ((_activeTool == PlayerTools.Hammer) && (!_actionInProgress) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
                 {
                     _actionInProgress = true;
                     _animator.SetTrigger("Attack");
                 }
                 else if (_activeTool != PlayerTools.Hammer)
                 {
-                    _actionInProgress = Input.GetButton("Jump");
+                    _actionInProgress = Input.GetButton($"{_controllerPrefix}:Action");
                 }
             }
         }
@@ -118,7 +121,7 @@ namespace Player
                 return;
             }
 
-            Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical")) * _movementSpeed;
+            Vector3 direction = new Vector3(Input.GetAxis($"{_controllerPrefix}:Horizontal"), 0.0f, Input.GetAxis($"{_controllerPrefix}:Vertical")) * _movementSpeed;
 
             if (direction.magnitude > MovementThreshold)
             {

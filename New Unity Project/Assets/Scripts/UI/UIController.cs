@@ -12,8 +12,13 @@ namespace UI
         {
             _animator = GetComponent<Animator>();
 
-            //FindObjectOfType<SmogOverlay>().SmogLimitReached += HandleSmogLimitReached;
+            FindObjectOfType<SmogOverlay>().SmogCleared += DisplayGameWon;
             FindObjectOfType<PlantPool>().AllPlantsHaveDied += DisplayGameOver;
+        }
+
+        private void DisplayGameWon()
+        {
+            _animator.SetTrigger("Win Game");
         }
 
         private void DisplayGameOver()

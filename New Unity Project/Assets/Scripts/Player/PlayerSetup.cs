@@ -6,6 +6,7 @@ namespace Player
 {
     public class PlayerSetup : MonoBehaviour
     {
+        [SerializeField] private int _playerIndex = 1;
         [SerializeField] private bool _playsFromLeft = true;
         [SerializeField] private PlayerTools _startingTool = PlayerTools.Pickaxe;
 
@@ -17,7 +18,7 @@ namespace Player
             carouselScript.Initialize(grid.GetCarouselPosition(_playsFromLeft), _startingTool);
 
             PlayerMovement playerMovementScript = transform.Find("Player Character Container").GetComponent<PlayerMovement>();
-            playerMovementScript.InitializePlayer(grid.GetPlayerStartPosition(_playsFromLeft), _startingTool, carouselScript);
+            playerMovementScript.InitializePlayer($"P{_playerIndex}", grid.GetPlayerStartPosition(_playsFromLeft), _startingTool, carouselScript);
         }
     }
 }
