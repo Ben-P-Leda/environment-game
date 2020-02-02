@@ -49,11 +49,11 @@ namespace Plants
             if (_growthTimeRemaining > 0)
             {
                 _growthTimeRemaining -= Time.fixedDeltaTime;
-                _scale += Time.fixedDeltaTime;
+                _scale = Mathf.Min(1.0f, _scale + Time.fixedDeltaTime);
             }
 
             _scale -= 0.1f * Time.fixedDeltaTime * _smogOverlay.SmogDensity;
-            _transform.localScale = Vector3.one * _scale;
+            _transform.localScale = Vector3.one * Mathf.Clamp01(_scale);
 
             if ((_scale <= 0.0f) && (_growthTimeRemaining <= 0.0f))
             {

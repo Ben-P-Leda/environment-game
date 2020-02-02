@@ -25,6 +25,7 @@ namespace Player
         private bool _actionInProgress;
         private bool _inProximityWithOtherPlayer;
         private float _swapCooldown;
+        private float _waterInCan;
 
         private Vector3 _startPosition;
         private PlayerTools _activeTool;
@@ -57,9 +58,9 @@ namespace Player
             _animator.GetBehaviour<PlayerIdleEvent>().EnteredStateCallback += HandleEnterIdleAnimation;
 
             GetComponentInChildren<ProximityDetector>().EnteredProximity += HandleProximityStateChange;
+            GetComponentInChildren<PlayerAnimationEvent>().NotifyAnimationEvent += HandleAnimationEvent;
 
             FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
-
             FindObjectsOfType<PlayerMovement>().First(x => x != this).SwapTools += HandleToolSwap;
         }
 
@@ -73,6 +74,14 @@ namespace Player
             _inProximityWithOtherPlayer = enteredProximity;
         }
 
+        private void HandleAnimationEvent(string message)
+        {
+            if (message == "Use Water")
+            {
+                _waterInCan = Mathf.Max(_waterInCan - 1.0f, 0.0f);
+            }
+        }
+
         private void HandleToolSwap(PlayerTools toActivate, bool originalSwapRequest)
         {
             if (originalSwapRequest)
@@ -82,6 +91,7 @@ namespace Player
 
             ActivateTool(toActivate);
             _carousel.ActivateToolForPlayer(toActivate);
+            _swapCooldown = 0.5f;
         }
 
         private void ActivateTool(PlayerTools toActivate)
@@ -90,6 +100,11 @@ namespace Player
             _pickaxe.localScale = _activeTool == PlayerTools.Pickaxe ? Vector3.one : Vector3.zero;
             _hammer.localScale = _activeTool == PlayerTools.Hammer ? Vector3.one : Vector3.zero;
             _wateringCan.localScale = _activeTool == PlayerTools.Can ? Vector3.one : Vector3.zero;
+
+            if (toActivate == PlayerTools.Can)
+            {
+                _waterInCan = 5.0f;
+            }
         }
 
         private void Respawn()
@@ -182,7 +197,7 @@ namespace Player
             _animator.SetBool("Is Moving", _isMoving);
             _animator.SetBool("Is Falling", _isFalling);
             _animator.SetBool("Is Repairing", _actionInProgress && _activeTool == PlayerTools.Pickaxe);
-            _animator.SetBool("Is Watering", _actionInProgress && _activeTool == PlayerTools.Can);
+            _animator.SetBool("Is Watering", _actionInProgress && _activeTool == PlayerTools.Can && _waterInCan > 0.0f);
         }
 
         private void OnTriggerEnter(Collider collider)

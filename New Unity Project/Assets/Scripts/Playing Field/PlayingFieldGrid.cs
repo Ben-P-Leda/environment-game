@@ -77,17 +77,6 @@ namespace PlayingField
                     _tileList.Add(TileGrid[x][z]);
                 }
             }
-
-            //for (int i = 0; i < _startingPlantCount; i++)
-            //{
-            //    Vector3 plantLocation = GetRandomTileCenter();
-
-            //    GameObject plant = Instantiate(_plantPrefab);
-            //    plant.name = $"Plant {i}";
-
-            //    plant.transform.position = plantLocation;
-            //    plant.transform.parent = transform;
-            //}
         }
 
         private static readonly Color[] Tile_Healthy_Colors = {new Color(0.0f, 0.6f, 0.0f), new Color(0.0f, 0.4f, 0.0f)};
