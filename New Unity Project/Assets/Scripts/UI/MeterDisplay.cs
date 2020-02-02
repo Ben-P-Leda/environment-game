@@ -31,13 +31,16 @@ namespace UI
         {
             actualValue = Mathf.Clamp01(actualValue);
 
-            _barTransform.localScale = new Vector3(actualValue, 1.0f, 1.0f);
+            if (_barTransform != null)
+            {
+                _barTransform.localScale = new Vector3(actualValue, 1.0f, 1.0f);
 
-            float colorModifier = actualValue * 2.0f;
+                float colorModifier = actualValue * 2.0f;
 
-            _barImage.color = colorModifier >= 1.0f
-                ? Color.Lerp(_halfColor, _fullColor, colorModifier - 1.0f)
-                : Color.Lerp(_emptyColor, _halfColor, colorModifier);
+                _barImage.color = colorModifier >= 1.0f
+                    ? Color.Lerp(_halfColor, _fullColor, colorModifier - 1.0f)
+                    : Color.Lerp(_emptyColor, _halfColor, colorModifier);
+            }
         }
 
         private void FixedUpdate()
