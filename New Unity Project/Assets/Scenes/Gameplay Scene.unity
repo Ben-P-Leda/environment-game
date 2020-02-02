@@ -550,6 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272bbc506b65530408a6eeb9ca4bb5b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _smogDensityMeterGameObject: {fileID: 1185317397}
   _particleDensity: 0.3
 --- !u!1 &432791407
 GameObject:
@@ -1176,6 +1177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f891855ac17c34097199ff1cb287e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _plantHealthMeterGameObject: {fileID: 1270017288}
   _plantPrefab: {fileID: 869283745289530077, guid: 29ac547a4f1dbd54181e244266cb7586,
     type: 3}
   _poolSize: 5
@@ -1349,6 +1351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1185317398}
+  - component: {fileID: 1185317399}
   m_Layer: 5
   m_Name: Air Qualify Meter
   m_TagString: Untagged
@@ -1378,6 +1381,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
+--- !u!114 &1185317399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185317397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86a01e23d36305f488049e59c1fe3300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fullColor: {r: 1, g: 0, b: 0, a: 1}
+  _halfColor: {r: 0.43778217, g: 0.015686274, b: 1, a: 1}
+  _emptyColor: {r: 0.4764151, g: 0.9170284, b: 1, a: 1}
 --- !u!1 &1270017288
 GameObject:
   m_ObjectHideFlags: 0
@@ -1387,6 +1405,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1270017289}
+  - component: {fileID: 1270017290}
   m_Layer: 5
   m_Name: Plant Health Meter
   m_TagString: Untagged
@@ -1416,6 +1435,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1270017290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270017288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86a01e23d36305f488049e59c1fe3300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fullColor: {r: 0, g: 1, b: 0, a: 1}
+  _halfColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _emptyColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1001 &1334719648
 PrefabInstance:
   m_ObjectHideFlags: 0
