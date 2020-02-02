@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Common;
 using Enums;
 using GameManagement;
 using Interfaces;
@@ -58,7 +59,7 @@ namespace Player
             _animator.GetBehaviour<PlayerIdleEvent>().EnteredStateCallback += HandleEnterIdleAnimation;
 
             GetComponentInChildren<ProximityDetector>().EnteredProximity += HandleProximityStateChange;
-            GetComponentInChildren<PlayerAnimationEvent>().NotifyAnimationEvent += HandleAnimationEvent;
+            GetComponentInChildren<AnimationEventListener>().NotifyAnimationEvent += HandleAnimationEvent;
 
             FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
             FindObjectsOfType<PlayerMovement>().First(x => x != this).SwapTools += HandleToolSwap;

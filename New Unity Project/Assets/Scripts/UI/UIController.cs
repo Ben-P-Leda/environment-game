@@ -1,4 +1,5 @@
-﻿using Plants;
+﻿using Common;
+using Plants;
 using Smog;
 using UnityEngine;
 
@@ -12,8 +13,17 @@ namespace UI
         {
             _animator = GetComponent<Animator>();
 
+            GetComponent<AnimationEventListener>().NotifyAnimationEvent += HandleAnimationEvent;
+
             FindObjectOfType<SmogOverlay>().SmogCleared += DisplayGameWon;
             FindObjectOfType<PlantPool>().AllPlantsHaveDied += DisplayGameOver;
+
+            Time.timeScale = 0.0f;
+        }
+
+        private void HandleAnimationEvent(string message)
+        {
+            Time.timeScale = 1.0f;
         }
 
         private void DisplayGameWon()

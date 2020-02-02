@@ -4,6 +4,7 @@ using Plants;
 using Smog;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameManagement
 {
@@ -11,6 +12,7 @@ namespace GameManagement
     {
         private SmogOverlay _smogOverlay;
         private List<ISuspendOnSmogLimitReached> _scriptsToSuspendWhenGameEnds = new List<ISuspendOnSmogLimitReached>();
+        private bool _gameOver;
 
         public void RegisterScriptToSuspendWhenGameEnds(ISuspendOnSmogLimitReached toRegister)
         {
@@ -31,6 +33,21 @@ namespace GameManagement
             foreach (ISuspendOnSmogLimitReached scriptToSuspend in _scriptsToSuspendWhenGameEnds)
             {
                 scriptToSuspend.enabled = false;
+            }
+
+            _gameOver = true;
+        }
+
+        private void OnEnable()
+        {
+            _gameOver = false;
+        }
+
+        private void FixedUpdate()
+        {
+            if ((_gameOver) && ((Input.GetButtonDown("P1:Action")) || (Input.GetButtonDown("P2:Action"))))
+            {
+                SceneManager.LoadScene("Start Scene");
             }
         }
     }
