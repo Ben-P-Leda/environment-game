@@ -17,6 +17,7 @@ namespace Smog
         private SmogOverlay _smogOverlay;
         private PlayingFieldTile _destinationTile;
         private ParticleSystem _exhaledParticles;
+        private AudioSource _soundEffect;
         private bool _entryComplete;
         private float _scale;
 
@@ -29,6 +30,7 @@ namespace Smog
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponentInChildren<Animator>();
             _exhaledParticles = GetComponentInChildren<ParticleSystem>();
+            _soundEffect = GetComponent<AudioSource>();
             _playingFieldGrid = FindObjectOfType<PlayingFieldGrid>();
 
             FindObjectOfType<SmogOverlay>().RegisterDensityChangeModifier(this);
@@ -61,10 +63,18 @@ namespace Smog
             _scale = 0.5f;
 
             _destinationTile.ObstructedBy = TileBlockers.Bug;
-            _transform.position = _destinationTile.Position + (Vector3.up * 20.0f);
+            _transform.position = _destinationTile.Position + (Vector3.up * 12.0f);
             _transform.localScale = Vector3.one * _scale;
 
+            _animator.enabled = true;
             _rigidbody.velocity = new Vector3(0.0f, -1.0f, 0.0f);
+
+            _soundEffect.volume = 0.0f;
+        }
+
+        private void OnDisable()
+        {
+            _soundEffect.volume = 0.0f;
         }
 
         private void FixedUpdate()
@@ -74,6 +84,11 @@ namespace Smog
                 _entryComplete = true;
                 _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
                 _animator.SetTrigger("Has Landed");
+                _soundEffect.volume = 0.5f;
+            }
+            else
+            {
+                _soundEffect.volume = Mathf.Clamp01(_soundEffect.volume + Time.fixedDeltaTime);
             }
 
             if (_entryComplete)
@@ -97,6 +112,7 @@ namespace Smog
         {
             if (collider.tag == "Damage Collider")
             {
+                AudioManager.PlayRandomSound("bug-splat");
                 SplatParticles.LaunchParticleEffect(_transform.position, _transform.localScale);
                 _destinationTile.ObstructedBy = TileBlockers.None;
                 gameObject.SetActive(false);

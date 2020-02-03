@@ -638,7 +638,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _effectsFolders:
   - UI
-  - In Game
+  - Spots
   _voiceCount: 10
   _musicClip: {fileID: 8300000, guid: fe26f5422ea11774786c529b3041648f, type: 3}
 --- !u!4 &394557201
@@ -2141,7 +2141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1437653993
 MonoBehaviour:
   m_ObjectHideFlags: 0

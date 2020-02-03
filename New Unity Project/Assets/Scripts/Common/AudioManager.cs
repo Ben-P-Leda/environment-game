@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Common
@@ -8,6 +9,7 @@ namespace Common
     {
         private static AudioManager _instance;
         public static void PlaySound(string name, float pitch = 1.0f, float volume = 1.0f) { _instance.PlaySoundEffect(name, pitch, volume); }
+        public static void PlayRandomSound(string nameStem, float pitch = 1.0f, float volume = 1.0f) { _instance.PlayRandomSoundEffect(nameStem, pitch, volume); }
         public static bool MusicPlaying { set { _instance.SetMusicActive(value); } }
 
         [SerializeField] private string[] _effectsFolders;
@@ -55,7 +57,14 @@ namespace Common
         {
             if (_effects.ContainsKey(name))
             {
-                AudioSource voice = GetFirstAvailableVoice();
+                AudioSource voice = null;
+                for (int i = 0; ((i < _voices.Count) && (voice == null)); i++)
+                {
+                    if (!_voices[i].isPlaying)
+                    {
+                        voice = _voices[i];
+                    }
+                }
 
                 if (voice != null)
                 {
@@ -67,18 +76,13 @@ namespace Common
             }
         }
 
-        private AudioSource GetFirstAvailableVoice()
+        private void PlayRandomSoundEffect(string nameStem, float pitch, float volumeModifier)
         {
-            AudioSource voice = null;
-            for (int i = 0; ((i < _voices.Count) && (voice == null)); i++)
+            string[] validNames = _effects.Where(x => x.Key.ToLower().StartsWith(nameStem.ToLower())).Select(x => x.Key).ToArray();
+            if (validNames.Any())
             {
-                if (!_voices[i].isPlaying)
-                {
-                    voice = _voices[i];
-                }
+                PlaySoundEffect(validNames[Random.Range(0, validNames.Length)], pitch, volumeModifier);
             }
-
-            return voice;
         }
 
         public void SetMusicActive(bool isActive)
