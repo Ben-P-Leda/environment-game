@@ -65,6 +65,8 @@
     <Compile Include="Assets\Scripts\Common\AnimationEventListener.cs" />
     <Compile Include="Assets\Scripts\Common\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Common\RendererCallback.cs" />
+    <Compile Include="Assets\Scripts\Effects\ParticleBurst.cs" />
+    <Compile Include="Assets\Scripts\Effects\ParticlePool.cs" />
     <Compile Include="Assets\Scripts\Enums\TileBlockers.cs" />
     <Compile Include="Assets\Scripts\Enums\Tools.cs" />
     <Compile Include="Assets\Scripts\Game Management\GameController.cs" />

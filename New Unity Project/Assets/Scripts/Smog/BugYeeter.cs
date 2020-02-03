@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Common;
+using Effects;
 using GameManagement;
 using Interfaces;
 using UnityEngine;
@@ -17,8 +18,13 @@ namespace Smog
 
         private void Awake()
         {
-            _bugPool = new ObjectPool(_bugPrefab, _poolSize, transform);
+            _bugPool = new ObjectPool(_bugPrefab, _poolSize, transform, WireUpSplatParticles);
             FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
+        }
+
+        private void WireUpSplatParticles(GameObject bugObject)
+        {
+            bugObject.GetComponent<BugLifecycle>().SplatParticles = GetComponent<ParticlePool>();
         }
 
         private void Start()

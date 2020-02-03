@@ -1,4 +1,5 @@
 ﻿using Common;
+using Effects;
 using Enums;
 using GameManagement;
 using Interfaces;
@@ -20,6 +21,7 @@ namespace Smog
         private float _scale;
 
         public float ChangeRateModifier { get { return gameObject.activeInHierarchy && _entryComplete ? 0.3f * _scale : 0.0f; } }
+        public ParticlePool SplatParticles { private get; set; }
 
         private void Awake()
         {
@@ -95,6 +97,7 @@ namespace Smog
         {
             if (collider.tag == "Damage Collider")
             {
+                SplatParticles.LaunchParticleEffect(_transform.position, _transform.localScale);
                 _destinationTile.ObstructedBy = TileBlockers.None;
                 gameObject.SetActive(false);
             }
