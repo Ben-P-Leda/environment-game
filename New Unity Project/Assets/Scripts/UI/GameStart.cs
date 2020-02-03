@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Common;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,6 +25,11 @@ namespace UI
             _playerTwoReady = false;
         }
 
+        private void Start()
+        {
+            AudioManager.MusicPlaying = true;
+        }
+
         private void FixedUpdate()
         {
             bool playerOnePress = Input.GetButtonDown("P1:Action");
@@ -31,8 +37,11 @@ namespace UI
 
             if ((playerOnePress) || (playerTwoPress))
             {
+                AudioManager.PlaySound("UI Selection");
+
                 if ((BothPlayersReady(playerOnePress, _playerTwoReady)) || (BothPlayersReady(playerTwoPress, _playerOneReady)))
                 {
+                    AudioManager.MusicPlaying = false;
                     SceneManager.LoadScene("Gameplay Scene");
                 }
                 else
