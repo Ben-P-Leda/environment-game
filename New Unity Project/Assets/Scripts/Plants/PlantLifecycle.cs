@@ -54,6 +54,7 @@ namespace Plants
             if ((_scale <= 0.0f) && (_growthTimeRemaining <= 0.0f))
             {
                 TileLocation.ObstructedBy = TileBlockers.None;
+                AudioManager.PlaySound("plant-death");
                 gameObject.SetActive(false);
             }
 

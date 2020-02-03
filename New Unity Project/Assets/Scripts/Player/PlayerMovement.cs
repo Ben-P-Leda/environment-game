@@ -157,11 +157,17 @@ namespace Player
         {
             if (_transform.position.y < Fall_Threshold)
             {
+                if (!_isFalling)
+                {
+                    AudioManager.PlaySound("player-fall");
+                }
+
                 _isFalling = true;
             }
 
             if (_transform.position.y < Respawn_Threshold)
             {
+                AudioManager.PlaySound("player-respawn");
                 Respawn();
             }
         }
