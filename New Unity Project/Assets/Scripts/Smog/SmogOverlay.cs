@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common;
 using GameManagement;
 using Interfaces;
 using UI;
@@ -65,6 +66,7 @@ namespace Smog
             if (_particleDensity <= 0.0f)
             {
                 SmogCleared?.Invoke();
+                AudioManager.PlaySound("win-fanfare");
             }
 
             _smogHealthMeter.DisplayValue = _particleDensity;
