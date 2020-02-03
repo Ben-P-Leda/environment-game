@@ -174,6 +174,7 @@ namespace Player
                 {
                     if ((_actionCooldown <= 0.0f) && (Input.GetButtonDown($"{_controllerPrefix}:Action")))
                     {
+                        AudioManager.PlayRandomSound("tool-swap");
                         SwapTools?.Invoke(_activeTool, true);
                     }
                 }
@@ -181,6 +182,7 @@ namespace Player
                 {
                     if (_actionCooldown <= 0.0f)
                     {
+                        AudioManager.PlayRandomSound("tool-swap");
                         PlayerTools nextTool = (PlayerTools) (((int) _activeTool + 1) % Enum.GetNames(typeof(PlayerTools)).Length);
                         ActivateTool(nextTool, 0.25f);
                     }

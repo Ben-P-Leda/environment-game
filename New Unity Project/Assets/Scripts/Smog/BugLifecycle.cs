@@ -18,6 +18,9 @@ namespace Smog
         private PlayingFieldTile _destinationTile;
         private ParticleSystem _exhaledParticles;
         private AudioSource _soundEffect;
+
+        private RigidbodyConstraints _startingConstraints;
+
         private bool _entryComplete;
         private float _scale;
 
@@ -32,6 +35,8 @@ namespace Smog
             _exhaledParticles = GetComponentInChildren<ParticleSystem>();
             _soundEffect = GetComponent<AudioSource>();
             _playingFieldGrid = FindObjectOfType<PlayingFieldGrid>();
+
+            _startingConstraints = _rigidbody.constraints;
 
             FindObjectOfType<SmogOverlay>().RegisterDensityChangeModifier(this);
             FindObjectOfType<GameController>().RegisterScriptToSuspendWhenGameEnds(this);
@@ -61,12 +66,14 @@ namespace Smog
             }
 
             _scale = 0.5f;
+            _entryComplete = false;
 
             _destinationTile.ObstructedBy = TileBlockers.Bug;
             _transform.position = _destinationTile.Position + (Vector3.up * 12.0f);
             _transform.localScale = Vector3.one * _scale;
 
             _animator.enabled = true;
+            _rigidbody.constraints = _startingConstraints;
             _rigidbody.velocity = new Vector3(0.0f, -1.0f, 0.0f);
 
             _soundEffect.volume = 0.0f;

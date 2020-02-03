@@ -82,6 +82,7 @@ namespace Plants
             if ((enabled) && (_startingPlants <= 0) && (_plantPool.AvailableObjectCount == _poolSize))
             {
                 AllPlantsHaveDied?.Invoke();
+                AudioManager.PlaySound("game-over");
             }
 
             float currentPlantHealth = _plants.Where(x => x.gameObject.activeInHierarchy).Sum(x => x.HealthFraction) / _poolSize;

@@ -1,4 +1,5 @@
-﻿using Enums;
+﻿using Common;
+using Enums;
 using Interfaces;
 using PlayingField;
 using Smog;
@@ -65,6 +66,8 @@ namespace Plants
             {
                 _timeToNextWaterAccept = 1.0f;
                 _growthTimeRemaining = 0.4f;
+
+                AudioManager.PlaySound("plant-grow");
             }
         }
     }
