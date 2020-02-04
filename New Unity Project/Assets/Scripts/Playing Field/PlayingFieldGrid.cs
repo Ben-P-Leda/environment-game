@@ -9,6 +9,7 @@ namespace PlayingField
     {
         [SerializeField] private GameObject _tilePrefab = null;
         [SerializeField] private GameObject _wallPrefab = null;
+        [SerializeField] private GameObject _barrierPrefab = null;
 
         [SerializeField] private int _gridWidth = 40;
         [SerializeField] private int _gridDepth = 40;
@@ -99,15 +100,23 @@ namespace PlayingField
 
                     _tileList.Add(_tileGrid[x][z]);
                 }
+
+                CreateWall(new Vector3(frontLeft.x + (step.x * x), 0.0f, frontLeft.z + (step.z * _gridDepth)), "North wall", x);
             }
 
-            CreateWall(_wallPrefab, _tileGrid[0][0].Position + new Vector3(-1.0f, 0.0f, -1.5f), _tileGrid[0][_gridDepth - 1].Position + new Vector3(-1.0f, 0.0f, 1.5f));
-            CreateWall(_wallPrefab, _tileGrid[_gridWidth - 1][0].Position + new Vector3(1.0f, 0.0f, -1.5f), _tileGrid[_gridWidth - 1][_gridDepth - 1].Position + new Vector3(1.0f, 0.0f, 1.5f));
-            CreateWall(_wallPrefab, _tileGrid[0][0].Position + new Vector3(-0.5f, 0.0f, -1.0f), _tileGrid[_gridWidth - 1][0].Position + new Vector3(0.5f, 0.0f, -1.0f));
-            CreateWall(_wallPrefab, _tileGrid[0][_gridDepth - 1].Position + new Vector3(-0.5f, 0.0f, 1.0f), _tileGrid[_gridWidth - 1][_gridDepth - 1].Position + new Vector3(0.5f, 0.0f, 1.0f));
+            for (int z = 0; z < _gridDepth + 1; z++)
+            {
+                CreateWall(new Vector3(frontLeft.x + (step.x * -1), 0.0f, frontLeft.z + (step.z * z)), "West wall", z);
+                CreateWall(new Vector3(frontLeft.x + (step.x * _gridWidth), 0.0f, frontLeft.z + (step.z * z)), "East wall", z);
+            }
+
+            CreateBarrier(_barrierPrefab, _tileGrid[0][0].Position + new Vector3(-1.0f, 0.0f, -1.5f), _tileGrid[0][_gridDepth - 1].Position + new Vector3(-1.0f, 0.0f, 1.5f));
+            CreateBarrier(_barrierPrefab, _tileGrid[_gridWidth - 1][0].Position + new Vector3(1.0f, 0.0f, -1.5f), _tileGrid[_gridWidth - 1][_gridDepth - 1].Position + new Vector3(1.0f, 0.0f, 1.5f));
+            CreateBarrier(_barrierPrefab, _tileGrid[0][0].Position + new Vector3(-0.5f, 0.0f, -1.0f), _tileGrid[_gridWidth - 1][0].Position + new Vector3(0.5f, 0.0f, -1.0f));
+            CreateBarrier(_barrierPrefab, _tileGrid[0][_gridDepth - 1].Position + new Vector3(-0.5f, 0.0f, 1.0f), _tileGrid[_gridWidth - 1][_gridDepth - 1].Position + new Vector3(0.5f, 0.0f, 1.0f));
         }
 
-        private void CreateWall(GameObject prefab, Vector3 endOne, Vector3 endTwo)
+        private void CreateBarrier(GameObject prefab, Vector3 endOne, Vector3 endTwo)
         {
             GameObject wall = Instantiate(prefab);
 
@@ -124,7 +133,13 @@ namespace PlayingField
             wallTransform.parent = transform;
             wallTransform.position = position;
             wallTransform.localScale = scale;
+        }
 
+        private void CreateWall(Vector3 position, string wallName, int segmentIndex)
+        {
+            GameObject wall = Instantiate(_wallPrefab);
+            wall.name = $"{wallName} {segmentIndex}";
+            wall.transform.position = position;
         }
 
         private static readonly Color[] Tile_Healthy_Colors = {new Color(0.0f, 0.6f, 0.0f), new Color(0.0f, 0.4f, 0.0f)};

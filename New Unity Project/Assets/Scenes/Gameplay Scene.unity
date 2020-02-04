@@ -832,7 +832,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tilePrefab: {fileID: 6186901187292049283, guid: a75858df0cba8104fbaa0ff9b20ceae2,
     type: 3}
-  _wallPrefab: {fileID: 6537538379234131819, guid: 25b58c6a2cbc618478f9bca3eae4b7e2,
+  _wallPrefab: {fileID: 1270852459661858868, guid: c3b9ed7743f5a8a4e9228bed56459f43,
+    type: 3}
+  _barrierPrefab: {fileID: 6537538379234131819, guid: 25b58c6a2cbc618478f9bca3eae4b7e2,
     type: 3}
   _gridWidth: 30
   _gridDepth: 20
