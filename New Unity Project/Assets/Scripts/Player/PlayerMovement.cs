@@ -6,6 +6,7 @@ using GameManagement;
 using Interfaces;
 using PlayingField;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Player
 {
@@ -18,6 +19,7 @@ namespace Player
         private Animator _animator;
         private ParticleSystem _contactParticles;
         private ParticleSystem _waterParticles;
+        private ParticleSystem _dirtParticles;
 
         private Transform _hammer;
         private Transform _pickaxe;
@@ -58,6 +60,7 @@ namespace Player
             ParticleSystem[] particleSystems = GetComponentsInChildren<ParticleSystem>();
             _contactParticles = particleSystems.First(x => x.name == "Contact Particles");
             _waterParticles = particleSystems.First(x => x.name == "Water Particles");
+            _dirtParticles = particleSystems.First(x => x.name == "Dirt Particles");
 
             _hammer = GetComponentsInChildren<Transform>().First(x => x.name == "Hammer Container").transform;
             _pickaxe = GetComponentsInChildren<Transform>().First(x => x.name == "Pickaxe Container").transform;
@@ -93,14 +96,21 @@ namespace Player
 
         private void HandleAnimationEvent(string message)
         {
-            if ((message == "Use Water") && (_waterInCan > 0.0f))
+            switch (message)
             {
-                _waterInCan = Mathf.Max(_waterInCan - 1.0f, 0.0f);
-                _waterParticles.Play();
-            }
-            else if (message == "Stop Water")
-            {
-                _waterParticles.Stop();
+                case "Use Water":
+                    if (_waterInCan > 0.0f)
+                    {
+                        _waterInCan = Mathf.Max(_waterInCan - 1.0f, 0.0f);
+                        _waterParticles.Play();
+                    }
+                    break;
+                case "Stop Water":
+                    _waterParticles.Stop();
+                    break;
+                case "Launch Dirt Particles":
+                    _dirtParticles.Emit(Random.Range(10, 20));
+                    break;
             }
         }
 
