@@ -55,7 +55,7 @@ namespace PlayingField
 
         public Vector3 GetCarouselPosition(bool playingFromLeft)
         {
-            return _tileGrid[playingFromLeft ? 1 : _gridWidth - 2][_gridDepth / 2].Position;
+            return _tileGrid[playingFromLeft ? 2 : _gridWidth - 3][_gridDepth / 2].Position;
         }
 
         public Vector3 GetPlayerStartPosition(bool playingFromLeft)

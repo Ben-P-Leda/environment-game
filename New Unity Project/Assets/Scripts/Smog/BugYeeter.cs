@@ -12,7 +12,7 @@ namespace Smog
         [SerializeField] private GameObject _bugPrefab = null;
         [SerializeField] private int _poolSize = 5;
         [SerializeField] private float _minimumBugInterval = 7.5f;
-        [SerializeField] private float _maximumBugInterval = 15.0f;
+        [SerializeField] private float _maximumBugInterval = 20.0f;
 
         private ObjectPool _bugPool;
 
