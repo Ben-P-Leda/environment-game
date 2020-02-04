@@ -140,6 +140,7 @@ namespace PlayingField
             GameObject wall = Instantiate(_wallPrefab);
             wall.name = $"{wallName} {segmentIndex}";
             wall.transform.position = position;
+            wall.transform.parent = transform;
         }
 
         private static readonly Color[] Tile_Healthy_Colors = {new Color(0.0f, 0.6f, 0.0f), new Color(0.0f, 0.4f, 0.0f)};

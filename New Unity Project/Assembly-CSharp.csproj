@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\Playing Field\PlayingFieldGrid.cs" />
     <Compile Include="Assets\Scripts\Playing Field\PlayingFieldTile.cs" />
     <Compile Include="Assets\Scripts\Playing Field\ToolCarousel.cs" />
+    <Compile Include="Assets\Scripts\Playing Field\WinBackground.cs" />
     <Compile Include="Assets\Scripts\Rain\CloudMovement.cs" />
     <Compile Include="Assets\Scripts\Rain\CloudPool.cs" />
     <Compile Include="Assets\Scripts\Smog\BugLifecycle.cs" />
